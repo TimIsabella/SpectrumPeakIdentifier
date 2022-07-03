@@ -14,19 +14,19 @@ for(i = 0; spectrumArray.length > i; i++)
  j = 0;
  outputString = "";
 
- //Identify peak base begin
+ //Identify peak base begins
  peakBaseBeginString = "";
  if((spectrumArray[i-1] == 0) && (spectrumArray[i] > 0)) peakBaseBeginString = `       <- Peak base BEGIN: ${spectrumArray[i]} - Element: ${i}`;
 
- //Identify peak
+ //Identify peaks
  peakString = "";
  if((spectrumArray[i-1] < spectrumArray[i]) && (spectrumArray[i+1] < spectrumArray[i])) peakString = `       <- PEAK: ${spectrumArray[i]} - Element: ${i}`;
 
- //Identify peak trough
+ //Identify peak troughs
  peakTroughString = "";
  if((spectrumArray[i-1] > spectrumArray[i]) && (spectrumArray[i+1] > spectrumArray[i])) peakTroughString = `       <- Peak TROUGH: ${spectrumArray[i]} - Element: ${i}`;
 
- //Identify peak base end
+ //Identify peak base ends
  peakBaseEndString = "";
  if((spectrumArray[i-1] > 0) && (spectrumArray[i] == 0)) peakBaseEndString = `       <- Peak base END: ${spectrumArray[i]} - Element: ${i}`;
  
