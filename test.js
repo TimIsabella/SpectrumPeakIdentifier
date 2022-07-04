@@ -70,7 +70,7 @@ for(i = 0; spectrumArray.length > i; i++)
  ///////////Output display///////////
  while(spectrumArray[i] > j)
  {
-  outputString += "--";
+  outputString += "███";
   j++;
  }
  
