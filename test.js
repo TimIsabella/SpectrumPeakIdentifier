@@ -14,31 +14,16 @@ let outputString = "",
     peakString = "";
     
 
+//TODO - need to add a plateu identifier when a peak has a flat top -- where two adjacent peaks match the same height
+
 //Output visual spectrum representation
 for(i = 0; spectrumArray.length > i; i++)
 {
- //Identify peak base begin
- if((spectrumArray[i-1] == 0) && (spectrumArray[i] > 0)) peakBaseBeginArray.push(i);
-
- //Identify peak
- if((spectrumArray[i-1] < spectrumArray[i]) && (spectrumArray[i+1] < spectrumArray[i])) peakArray.push(i);
-
- /*
- //Identify plateu peak -- when a peak has a flat top
- if((spectrumArray[i-1] == spectrumArray[i]) && (spectrumArray[i+1] < spectrumArray[i])) peakString = `          <- PEAK (${spectrumArray[i]}) - Element ${i}`;
- */
-
- //Identify peak trough
- if((spectrumArray[i-1] > spectrumArray[i]) && (spectrumArray[i+1] > spectrumArray[i]))
-   {
-	//Check to ensure dead zones are not counted
-	if(spectrumArray[i] > 0) peakTroughArray.push(i);
-   }
- 
- //Identify peak base end
- if((spectrumArray[i-1] > 0) && (spectrumArray[i] == 0)) peakBaseEndArray.push(i);
+ if((spectrumArray[i-1] == 0) && (spectrumArray[i] > 0)) peakBaseBeginArray.push(i); //Identify peak base begin
+ if((spectrumArray[i-1] < spectrumArray[i]) && (spectrumArray[i+1] < spectrumArray[i])) peakArray.push(i); //Identify peak
+ if((spectrumArray[i-1] > spectrumArray[i]) && (spectrumArray[i+1] > spectrumArray[i])) if(spectrumArray[i] > 0) peakTroughArray.push(i); //Identify peak trough with extra check to ensure dead zones are not counter
+ if((spectrumArray[i-1] > 0) && (spectrumArray[i] == 0)) peakBaseEndArray.push(i); //Identify peak base end
 }
-
 
 
 //Output visual spectrum representation
