@@ -67,6 +67,7 @@ for(i = 0; spectrumArray.length > i; i++)
 	  j++;
 	 }
  
+ j = 0;
  ///////////Output display///////////
  while(spectrumArray[i] > j)
  {
