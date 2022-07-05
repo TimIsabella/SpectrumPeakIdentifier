@@ -1,6 +1,5 @@
-let spectrumArray = [0, 0, 2, 4, 7, 6, 10, 6, 3, 5, 6, 9, 12, 6, 2, 5, 9, 5, 3, 4, 10, 20, 15, 12, 13, 9, 8, 10, 10, 9, 5, 0];
-
-//let spectrumArray = [0, 1, 2, 3, 66, 3, 2, 1, 2, 3, 25, 3, 2, 1, 1, 1, 1, 1, 1, 2, 3, 11, 3, 2, 1, 0];
+//let spectrumArray = [0, 0, 2, 4, 7, 6, 10, 6, 3, 5, 6, 9, 12, 6, 2, 5, 9, 5, 3, 4, 10, 20, 15, 12, 13, 9, 8, 10, 10, 9, 5, 0];
+let spectrumArray = [0, 1, 2, 3, 66, 3, 2, 1, 2, 3, 25, 3, 2, 1, 1, 1, 1, 1, 1, 2, 3, 11, 3, 2, 1, 0];
 
 let peakBaseBeginArray = [];
 
@@ -91,7 +90,7 @@ for(i = 0; spectrumArray.length > i; i++)
  j = 0;
  while(peakBaseBeginArray.length > j)
 	 {
-	  if(peakBaseBeginArray[j] == i) peakBaseBeginString = `            <- BASE begin (${spectrumArray[i]}) - Element ${i}`;
+	  if(peakBaseBeginArray[j] == i) peakBaseBeginString = `            <- BASE begin (${spectrumArray[i]}) - Index ${i}`;
 	  j++;
 	 }
 
@@ -99,7 +98,7 @@ for(i = 0; spectrumArray.length > i; i++)
  j = 0;
  while(peakArray[0].length > j)
 	 {
-	  if(peakArray[0][j] == i) peakString = `          <- PEAK (${peakArray[1][j]}) - Element ${peakArray[0][j]}`;
+	  if(peakArray[0][j] == i) peakString = `          <- PEAK (${peakArray[1][j]}) - Index ${peakArray[0][j]}`;
 	  j++;
 	 }
 
@@ -107,7 +106,7 @@ for(i = 0; spectrumArray.length > i; i++)
  j = 0;
  while(peakTroughArray.length > j)
 	 {
-	  if(peakTroughArray[j] == i) peakTroughString = `           <- TROUGH (${spectrumArray[i]}) - Element ${i}`;
+	  if(peakTroughArray[j] == i) peakTroughString = `           <- TROUGH (${spectrumArray[i]}) - Index ${i}`;
 	  j++;
 	 }
 
@@ -115,12 +114,12 @@ for(i = 0; spectrumArray.length > i; i++)
  j = 0;
  while(peakBaseEndArray.length > j)
 	 {
-	  if(peakBaseEndArray[j] == i) peakBaseEndString = `          <- BASE end (${spectrumArray[i]}) - Element ${i}`;
+	  if(peakBaseEndArray[j] == i) peakBaseEndString = `          <- BASE end (${spectrumArray[i]}) - Index ${i}`;
 	  j++;
 	 }
  
- if(i == peakCenter) peakCenterStr = `          <------ PEAK CENTER (${spectrumArray[i]}) - Element ${i}`;
- if(i == weightedCenter) weightedCenterStr = `          <------ PEAK WEIGHTED CENTER (${spectrumArray[i]}) - Element ${i}`;
+ if(i == peakCenter) peakCenterStr = `          <------ PEAK CENTER (${spectrumArray[i]}) - Index ${i}`;
+ if(i == weightedCenter) weightedCenterStr = `          <------ PEAK WEIGHTED CENTER (${spectrumArray[i]}) - Index ${i}`;
  
  //Output spectrum display bars
  j = 0;
