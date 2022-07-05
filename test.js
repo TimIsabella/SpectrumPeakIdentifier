@@ -1,5 +1,7 @@
 //let spectrumArray = [0, 0, 2, 4, 7, 6, 10, 6, 3, 5, 6, 9, 12, 6, 2, 5, 9, 5, 3, 4, 10, 20, 15, 12, 13, 9, 8, 10, 10, 9, 5, 0];
-let spectrumArray = [0, 1, 2, 3, 66, 3, 2, 1, 2, 3, 25, 3, 2, 1, 1, 1, 1, 1, 1, 2, 3, 11, 3, 2, 1, 0];
+//let spectrumArray = [0, 1, 2, 3, 66, 3, 2, 1, 2, 3, 25, 3, 2, 1, 1, 1, 1, 1, 1, 2, 3, 11, 3, 2, 1, 0];
+//let spectrumArray = [0, 1, 3, 4, 11, 3, 2, 1, 0];
+let spectrumArray = [0, 1, 3, 4, 11, 3, 2, 1, 2, 4, 20, 6, 2, 1, 0];
 
 let peakBaseBeginArray = [];
 
@@ -62,15 +64,18 @@ for(i = 0; spectrumArray.length > i; i++)
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-//Calculated weighted peak center
+//Calculate peak average center weighted index
 // (∑(peak value * index point)) / ∑(peak value)
 for(i = 0; peakArray[0].length > i; i++)
 {
- weightedPeaks += peakArray[1][i] * peakArray[0][i];
- weightedPeaksDivisor += peakArray[1][i];
+ weightedPeaks += peakArray[1][i] * peakArray[0][i];  //Multiply peak value with index value, then add to 'weightedPeaks'
+ weightedPeaksDivisor += peakArray[1][i];             //Add peak values together into 'weightedPeaksDivisor'
 }
 
+//Divide results of peak average center weighted index
 weightedCenter = Math.round(weightedPeaks / weightedPeaksDivisor);
+
+//Add all peak indexes together and divide by quantity
 peakCenter = Math.round(peakAccume / peakArray[0].length);
 
 
@@ -118,8 +123,8 @@ for(i = 0; spectrumArray.length > i; i++)
 	  j++;
 	 }
  
- if(i == peakCenter) peakCenterStr = `          <------ PEAK CENTER (${spectrumArray[i]}) - Index ${i}`;
- if(i == weightedCenter) weightedCenterStr = `          <------ PEAK WEIGHTED CENTER (${spectrumArray[i]}) - Index ${i}`;
+ if(i == peakCenter) peakCenterStr = `              <====== PEAK AVERAGE CENTER (${spectrumArray[i]}) - Index ${i}`;
+ if(i == weightedCenter) weightedCenterStr = `              <====== PEAK WEIGHTED AVERAGE CENTER (${spectrumArray[i]}) - Index ${i}`;
  
  //Output spectrum display bars
  j = 0;
@@ -140,5 +145,5 @@ console.log("\n\n")
 console.log(`Array Length: ${spectrumArray.length}`);
 console.log(`Peak Average Center Index: ${peakCenter}`);
 //console.log(`Trough Average: ${troughAvg / peakTroughArray.length}`);
-console.log(`Weighted Peak Center Index: ${weightedCenter}`);
+console.log(`Peak Average Center Weighted Index: ${weightedCenter}`);
 
