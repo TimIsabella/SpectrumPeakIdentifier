@@ -1,7 +1,7 @@
 //let spectrumArray = [0, 0, 2, 4, 7, 6, 10, 6, 3, 5, 6, 9, 12, 6, 2, 5, 9, 5, 3, 4, 10, 20, 15, 12, 13, 9, 8, 10, 10, 9, 5, 0];
 //let spectrumArray = [0, 1, 2, 3, 66, 3, 2, 1, 2, 3, 25, 3, 2, 1, 1, 1, 1, 1, 1, 2, 3, 11, 3, 2, 1, 0];
 //let spectrumArray = [0, 1, 3, 4, 11, 3, 2, 1, 0];
-let spectrumArray = [0, 1, 3, 4, 11, 3, 2, 1, 2, 4, 20, 6, 2, 1, 0];
+let spectrumArray = [0, 1, 3, 4, 66, 8, 1, 4, 4, 4, 4, 6, 11, 11, 11, 11, 11, 3, 2, 1, 2, 4, 20, 6, 2, 1, 0];
 
 let peakBaseBeginArray = [];
 
@@ -17,6 +17,7 @@ let weightedPeaks = 0;
 let weightedPeaksDivisor = 0;
 let weightedCenter = 0;
 let peakCenter = 0;
+let peakPlateauCount = 0;
 
 let i, j;
 let outputString = "",
@@ -28,8 +29,8 @@ let outputString = "",
     peakCenterStr = "";
     
 
-//TODO - need to add a peak plateu identifier -- where two adjacent peaks match the same height
-//TODO - need to add a trough plateu identifier -- where two adjacent troughs match the same height
+//TODO - need to add a peak plateau identifier -- where two adjacent peaks match the same height
+//TODO - need to add a trough plateau identifier -- where two adjacent troughs match the same height
 
 
 
@@ -40,6 +41,7 @@ for(i = 0; spectrumArray.length > i; i++)
  if((spectrumArray[i-1] == 0) && (spectrumArray[i] > 0)) peakBaseBeginArray.push(i); //Identify peak base begin
  //if((spectrumArray[i-1] < spectrumArray[i]) && (spectrumArray[i+1] < spectrumArray[i])) {peakArray.push(i); peakAvg += spectrumArray[i];} //Identify peak
  
+ /*
  //Identify peak
  if((spectrumArray[i-1] < spectrumArray[i]) && (spectrumArray[i+1] < spectrumArray[i])) 
    {
@@ -48,7 +50,50 @@ for(i = 0; spectrumArray.length > i; i++)
     
     peakAccume += i;
    }
+ */
  
+ //Identify peak beginning (lower to higher)
+ if(spectrumArray[i-1] < spectrumArray[i]) 
+   {
+    //If peak falling (higher to lower)
+    if(spectrumArray[i] > spectrumArray[i+1])
+      {
+       peakArray[0].push(i);                   //Index
+       peakArray[1].push(spectrumArray[i]);    //Value
+      
+       peakAccume += i;
+      }
+    
+    //If peak plateau (flat top)
+    if(spectrumArray[i] == spectrumArray[i+1])
+      {
+       peakPlateauCount = 0;
+       j = 0;
+       
+       //Check if next points (top of spectrum down) match and add to plateau count
+       while(true)
+            {
+             //If plateau end at fall
+             if(spectrumArray[i+j] > spectrumArray[i+1+j])
+               {
+                peakArray[0].push(i + Math.round(peakPlateauCount / 2));                   //Index
+                peakArray[1].push(spectrumArray[i + Math.round(peakPlateauCount / 2)]);    //Value
+                peakAccume += i + Math.round(peakPlateauCount / 2);
+                
+                break;
+               }
+              
+             peakPlateauCount++;
+             j++;
+             
+             //If plateau ends in rise (peak continuation)
+             if(spectrumArray[i+j] < spectrumArray[i+1+j]) break;
+            }
+	  }
+   }
+ 
+ 
+ /*
  //Identify peak trough with extra check to ensure dead zones are not counter
  if((spectrumArray[i-1] > spectrumArray[i]) && (spectrumArray[i+1] > spectrumArray[i])) if(spectrumArray[i] > 0) 
    {
@@ -57,7 +102,8 @@ for(i = 0; spectrumArray.length > i; i++)
     
     troughAccum += i;
    } 
-   
+ */
+
  if((spectrumArray[i-1] > 0) && (spectrumArray[i] == 0)) peakBaseEndArray.push(i); //Identify peak base end
 }
 
