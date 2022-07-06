@@ -29,9 +29,7 @@ let outputString = "",
     peakCenterStr = "";
     
 
-//TODO - need to add a peak plateau identifier -- where two adjacent peaks match the same height
-//TODO - need to add a trough plateau identifier -- where two adjacent troughs match the same height
-
+//TODO - perform same calculations on troughs as for peaks
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,18 +37,6 @@ let outputString = "",
 for(i = 0; spectrumArray.length > i; i++)
 {
  if((spectrumArray[i-1] == 0) && (spectrumArray[i] > 0)) peakBaseBeginArray.push(i); //Identify peak base begin
- //if((spectrumArray[i-1] < spectrumArray[i]) && (spectrumArray[i+1] < spectrumArray[i])) {peakArray.push(i); peakAvg += spectrumArray[i];} //Identify peak
- 
- /*
- //Identify peak
- if((spectrumArray[i-1] < spectrumArray[i]) && (spectrumArray[i+1] < spectrumArray[i])) 
-   {
-    peakArray[0].push(i);                   //Index
-    peakArray[1].push(spectrumArray[i]);    //Value
-    
-    peakAccume += i;
-   }
- */
  
  //Identify peak beginning (lower to higher)
  if(spectrumArray[i-1] < spectrumArray[i]) 
