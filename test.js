@@ -120,7 +120,7 @@ for(i = 0; spectrumLength > i; i++)
              //If plateau ends in rise then break loop disregarding calculation (peak continuation)
              if(spectrumArray[i+j] < spectrumArray[i+1+j]) break;
             }
-	  }
+	    }
    }
 
  //Identify peak base end
