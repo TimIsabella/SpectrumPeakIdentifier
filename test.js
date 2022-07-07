@@ -30,7 +30,8 @@ let outputString = "",
     peakString = "",
     weightedCenterStr = "",
     peakCenterStr = "";
-    
+
+
 //////////////////////////////////////////////////////////
 //TODO - perform same calculations on troughs as for peaks
 //////////////////////////////////////////////////////////
