@@ -63,7 +63,6 @@ for(i = 0; spectrumLength > i; i++)
        //If peak falling (higher to lower)
        if(spectrumArray[i] > spectrumArray[i+1])
          {
-          
           //Push peak
           k = 0;
           while(true)
