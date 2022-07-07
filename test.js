@@ -40,88 +40,87 @@ let outputString = "",
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //Establish points for spectrum
 for(i = 0; spectrumLength > i; i++)
-{
- //Identify peak base begin
- if((spectrumArray[i-1] == 0) && (spectrumArray[i] > 0))
    {
-    //Push peak base
-    k = 0;
-    while(true)
-         {
-          if(!peakBaseBeginArray[k])
-            {
-             peakBaseBeginArray[k] = i; //Push index
-             
-             break;
-            }
-          else k++;
-         }
-   }
- 
- //Identify peak beginning (lower to higher)
- if(spectrumArray[i-1] < spectrumArray[i]) 
-   {
-    //If peak falling (higher to lower)
-    if(spectrumArray[i] > spectrumArray[i+1])
+    //Identify peak base begin
+    if((spectrumArray[i-1] == 0) && (spectrumArray[i] > 0))
       {
-       
-       //Push peak
+       //Push peak base
        k = 0;
        while(true)
             {
-             if(!peakArray[0][k]) 
+             if(!peakBaseBeginArray[k])
                {
-                peakArray[0][k] = i; //Push index
-                peakArray[1][k] = spectrumArray[i]; //Push value
-                
+                peakBaseBeginArray[k] = i; //Push index
                 break;
                }
              else k++;
             }
-      
-       peakAccume += i;
       }
     
-    //If peak plateau (flat top)
-    if(spectrumArray[i] == spectrumArray[i+1])
+    //Identify peak beginning (lower to higher)
+    if(spectrumArray[i-1] < spectrumArray[i]) 
       {
-       peakPlateauCount = 0;
-       j = 0;
-       
-       //Check if next points (top of spectrum down) match and add to plateau count
-       while(true)
-            {
-             //If plateau end at a fall, plateau complete, push peak point and break loop
-             if(spectrumArray[i+j] > spectrumArray[i+1+j])
+       //If peak falling (higher to lower)
+       if(spectrumArray[i] > spectrumArray[i+1])
+         {
+          
+          //Push peak
+          k = 0;
+          while(true)
                {
-               
-                //Push peak
-                k = 0;
-                while(true)
-                     {
-                      if(!peakArray[0][k])
-                        {
-                         peakArray[0][k] = i + Math.round(peakPlateauCount / 2); //Push index
-                         peakArray[1][k] = spectrumArray[i + Math.round(peakPlateauCount / 2)]; //Push value
-                         
-                         break;
-                        }
-                      else k++;
-                     }
-                
-                peakAccume += i + Math.round(peakPlateauCount / 2);
-                
-                break;
+                if(!peakArray[0][k]) 
+                  {
+                   peakArray[0][k] = i; //Push index
+                   peakArray[1][k] = spectrumArray[i]; //Push value
+                   
+                   break;
+                  }
+                else k++;
                }
-              
-             peakPlateauCount++;
-             j++;
-             
-             //If plateau ends in rise then break loop disregarding calculation (peak continuation)
-             if(spectrumArray[i+j] < spectrumArray[i+1+j]) break;
-            }
-	    }
-   }
+         
+          peakAccume += i;
+         }
+       
+       //If peak plateau (flat top)
+       if(spectrumArray[i] == spectrumArray[i+1])
+         {
+          peakPlateauCount = 0;
+          j = 0;
+          
+          //Check if next points (top of spectrum down) match and add to plateau count
+          while(true)
+               {
+                //If plateau end at a fall, plateau complete, push peak point and break loop
+                if(spectrumArray[i+j] > spectrumArray[i+1+j])
+                  {
+                  
+                   //Push peak
+                   k = 0;
+                   while(true)
+                        {
+                         if(!peakArray[0][k])
+                           {
+                            peakArray[0][k] = i + Math.round(peakPlateauCount / 2); //Push index
+                            peakArray[1][k] = spectrumArray[i + Math.round(peakPlateauCount / 2)]; //Push value
+                            
+                            break;
+                           }
+                         else k++;
+                        }
+                   
+                   peakAccume += i + Math.round(peakPlateauCount / 2);
+                   
+                   break;
+                  }
+                 
+                peakPlateauCount++;
+                j++;
+                
+                //If plateau ends in rise then break loop disregarding calculation (peak continuation)
+                if(spectrumArray[i+j] < spectrumArray[i+1+j]) break;
+               }
+   	     }
+      }
 
  //Identify peak base end
  if((spectrumArray[i-1] > 0) && (spectrumArray[i] == 0)) 
@@ -133,7 +132,6 @@ for(i = 0; spectrumLength > i; i++)
           if(!peakBaseEndArray[k])
             {
              peakBaseEndArray[k] = i; //Push index
-             
              break;
             }
           else k++;
@@ -145,10 +143,10 @@ for(i = 0; spectrumLength > i; i++)
 //Calculate peak average center weighted index
 // (∑(peak value * index point)) / ∑(peak value)
 for(i = 0; peakArray[0].length > i; i++)
-{
- weightedPeaks += peakArray[1][i] * peakArray[0][i];  //Multiply peak value with index value, then add to 'weightedPeaks'
- weightedPeaksDivisor += peakArray[1][i];             //Add peak values together into 'weightedPeaksDivisor'
-}
+   {
+    weightedPeaks += peakArray[1][i] * peakArray[0][i];  //Multiply peak value with index value, then add to 'weightedPeaks'
+    weightedPeaksDivisor += peakArray[1][i];             //Add peak values together into 'weightedPeaksDivisor'
+   }
 
 //Divide results of peak average center weighted index
 weightedCenter = Math.round(weightedPeaks / weightedPeaksDivisor);
@@ -160,53 +158,53 @@ peakCenter = Math.round(peakAccume / peakArray[0].length);
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //Create points for visual spectrum representation
 for(i = 0; spectrumArray.length > i; i++)
-{
- outputString = "";
- peakBaseBeginString = "";
- peakString = "";
- peakTroughString = "";
- peakBaseEndString = "";
- peakCenterStr = "";
- weightedCenterStr = "";
- 
- //Identify peak base begin
- j = 0;
- while(peakBaseBeginArray.length > j)
-	 {
-	  if(peakBaseBeginArray[j] == i) peakBaseBeginString = `            <- BASE begin (${spectrumArray[i]}) - Index ${i}`;
-	  j++;
-	 }
-
- //Identify peak
- j = 0;
- while(peakArray[0].length > j)
-	 {
-	  if(peakArray[0][j] == i) peakString = `          <- PEAK (${peakArray[1][j]}) - Index ${peakArray[0][j]}`;
-	  j++;
-	 }
-
- //Identify peak base end
- j = 0;
- while(peakBaseEndArray.length > j)
-	 {
-	  if(peakBaseEndArray[j] == i) peakBaseEndString = `          <- BASE end (${spectrumArray[i]}) - Index ${i}`;
-	  j++;
-	 }
- 
- if(i == peakCenter) peakCenterStr = `              <====== PEAK AVERAGE CENTER (${spectrumArray[i]}) - Index ${i}`;
- if(i == weightedCenter) weightedCenterStr = `              <====== PEAK WEIGHTED AVERAGE CENTER (${spectrumArray[i]}) - Index ${i}`;
- 
- //Output spectrum display bars
- j = 0;
- while(spectrumArray[i] > j)
- {
-  outputString += "███";
-  j++;
- }
- 
- //Output results to console
- console.log(outputString + peakBaseBeginString + peakBaseEndString + peakString + peakCenterStr + weightedCenterStr);
-}
+   {
+    outputString = "";
+    peakBaseBeginString = "";
+    peakString = "";
+    peakTroughString = "";
+    peakBaseEndString = "";
+    peakCenterStr = "";
+    weightedCenterStr = "";
+    
+    //Identify peak base begin
+    j = 0;
+    while(peakBaseBeginArray.length > j)
+      	  {
+      	   if(peakBaseBeginArray[j] == i) peakBaseBeginString = `            <- BASE begin (${spectrumArray[i]}) - Index ${i}`;
+      	   j++;
+      	  }
+   
+    //Identify peak
+    j = 0;
+    while(peakArray[0].length > j)
+      	  {
+      	   if(peakArray[0][j] == i) peakString = `          <- PEAK (${peakArray[1][j]}) - Index ${peakArray[0][j]}`;
+      	   j++;
+      	  }
+   
+    //Identify peak base end
+    j = 0;
+    while(peakBaseEndArray.length > j)
+      	  {
+      	   if(peakBaseEndArray[j] == i) peakBaseEndString = `          <- BASE end (${spectrumArray[i]}) - Index ${i}`;
+      	   j++;
+      	  }
+    
+    if(i == peakCenter) peakCenterStr = `              <====== PEAK AVERAGE CENTER (${spectrumArray[i]}) - Index ${i}`;
+    if(i == weightedCenter) weightedCenterStr = `              <====== PEAK WEIGHTED AVERAGE CENTER (${spectrumArray[i]}) - Index ${i}`;
+    
+    //Output spectrum display bars
+    j = 0;
+    while(spectrumArray[i] > j)
+         {
+          outputString += "███";
+          j++;
+         }
+    
+    //Output results to console
+    console.log(outputString + peakBaseBeginString + peakBaseEndString + peakString + peakCenterStr + weightedCenterStr);
+   }
 
 
 
