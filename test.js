@@ -4,9 +4,12 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //let VspecContSR = [0, 0, 2, 4, 7, 6, 10, 10, 6, 3, 5, 6, 9, 12, 6, 2, 5, 9, 5, 3, 4, 10, 20, 15, 12, 13, 9, 8, 10, 10, 9, 5, 0];
-let VspecContSR = [0, 1, 2, 3, 33, 3, 2, 1, 2, 3, 20, 25, 26, 26, 26, 3, 2, 1, 1, 1, 1, 1, 1, 2, 3, 44, 3, 2, 1, 0];
+//let VspecContSR = [0, 1, 2, 3, 33, 3, 2, 1, 2, 3, 20, 25, 26, 26, 26, 3, 2, 1, 1, 1, 1, 1, 1, 2, 3, 44, 3, 2, 1, 0];
 //let VspecContSR = [0, 1, 3, 4, 11, 3, 2, 1, 0];
-//let VspecContSR = [0,9,2,8,13,22,19,15,8,18,14,6,9,21,20,18,9,16,2,15,9,16,4,8,3,8,16,8,5,19,4,12,3,10,10,13,8,21,4,1,16,19,3,6,14,21,22,15,19,19,22,19,9,22,5,7,7,14,8,7,2,3,13,19,6,11,2,8,7,14,16,21,22,19,4,5,16,14,12,19,19,8,19,3,12,17,17,13,21,14,12,7,20,18,17,19,15,7,21,21,14,8,2,17,20,14,5,19,17,5,1,15,0];
+//let VspecContSR = [0,9,2,8,13,22,19,15,8,18,14,6,9,21,20,18,9,16,2,15,9,16,4,0,0,8,3,8,16,8,5,19,4,12,3,10,10,13,8,21,4,1,0,0,16,19,3,6,14,21,22,15,19,19,22,19,9,22,5,7,7,0,0,14,8,7,2,3,13,19,6,11,2,8,7,14,16,21,22,19,4,0,0,5,16,14,12,19,19,8,19,3,0,0,12,17,17,13,21,14,12,7,20,18,17,19,15,7,21,21,14,8,0,0,0,2,17,20,14,5,19,17,5,1,15,0];
+//let VspecContSR = [0, 1, 2, 3, 33, 3, 2, 5, 10, 22, 7, 8, 2, 1, 0, 0, 0, 2, 3, 20, 25, 26, 26, 26, 3, 8, 5, 2, 1, 8, 9, 11, 7, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 3, 44, 3, 2, 1, 0];
+
+let VspecContSR = [0, 1, 6, 9, 11, 9, 6, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 1, 0, 1, 6, 9, 11, 9, 22, 9, 33, 9, 44, 9, 6, 1, 0, 1, 6, 9, 9, 9, 9, 6, 1, 0, 1, 6, 9, 66, 9, 3, 1, 3, 9, 11, 9, 6, 1, 0];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -16,16 +19,17 @@ let i, j, k;
 let VspecContSRlength = VspecContSR.length;
 
 let VspecContSRpeaksA = [[], []]; //0 = index, 1 = value
+let VspecContSRpeaksAtemp = [[], []]; //0 = index, 1 = value
 let VspecContSRpeaksBaseBeginA = [];
 let VspecContSRpeaksBaseEndA = [];
 let VspecContSRpeaksAccume = 0;
 
 let VspecContSRpeaksWeighted = 0;
 let VspecContSRpeaksWeightedDivisor = 0;
-let VspecContSRpeaksWeightedCenter = 0;
+let VspecContSRpeaksWeightedCenterA = [];
 
-let VspecContSRpeaksAvgCenter = 0;
 let VspecContSRpeaksPlateauCount = 0;
+let VspecContSRpeaksAvgCenterA = [];
 
 let outputString = "",
     peakBaseBeginString = "",
@@ -35,9 +39,10 @@ let outputString = "",
     peakCenterStr = "";
 
 
-//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 //TODO - perform same calculations on troughs as for peaks
-//////////////////////////////////////////////////////////
+//     - If last element of VspecContSR doesn't end in a zero, the 'base end' does not get identified
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,6 +52,15 @@ for(i = 0; VspecContSRlength > i; i++)
     //Identify peak base begin
     if((VspecContSR[i-1] == 0) && (VspecContSR[i] > 0))
       {
+       //Clear in preparation for new SR cloud
+       VspecContSRpeaksBaseBeginA = [];
+       VspecContSRpeaksA = [[],[]];
+       VspecContSRpeaksPlateauCount
+       VspecContSRpeaksWeighted = 0;        
+       VspecContSRpeaksWeightedDivisor = 0;
+       VspecContSRpeaksAccume = 0;
+       VspecContSRpeaksBaseEndA = [];
+      
        //Push peak base
        k = 0;
        while(true)
@@ -124,32 +138,67 @@ for(i = 0; VspecContSRlength > i; i++)
    	     }
       }
 
- //Identify peak base end
- if((VspecContSR[i-1] > 0) && (VspecContSR[i] == 0)) 
-   {
-    //Push peak base
-    k = 0;
-    while(true)
-         {
-          if(!VspecContSRpeaksBaseEndA[k])
+    //Identify peak base end
+    if((VspecContSR[i-1] > 0) && (VspecContSR[i] == 0)) 
+      {
+       //Push peak base
+       k = 0;
+       while(true)
             {
-             VspecContSRpeaksBaseEndA[k] = i; //Push index
-             break;
+             if(!VspecContSRpeaksBaseEndA[k])
+               {
+                VspecContSRpeaksBaseEndA[k] = i; //Push index
+                break;
+               }
+             else k++;
             }
-          else k++;
-         }
+       
+       //Push peak average center
+       k = 0;
+       while(true)
+            {
+             if(!VspecContSRpeaksAvgCenterA[k])
+               {
+                //Add all peak indexes together and divide by quantity and push
+                VspecContSRpeaksAvgCenterA[k] = Math.round(VspecContSRpeaksAccume / VspecContSRpeaksA[0].length);
+                break;
+               }
+             else k++;
+            }
+       
+       //Calculate peak average center weighted index
+       // (∑(peak value * index point)) / ∑(peak value)
+       for(k = 0; VspecContSRpeaksA[0].length > k; k++)
+          {
+           VspecContSRpeaksWeighted += VspecContSRpeaksA[1][k] * VspecContSRpeaksA[0][k];  //Multiply peak value with index value, then add to 'VspecContSRpeaksWeighted'
+           VspecContSRpeaksWeightedDivisor += VspecContSRpeaksA[1][k];                     //Add peak values together into 'VspecContSRpeaksWeightedDivisor'
+          }
+       
+       //Push peak weighted center
+       k = 0;
+       while(true)
+            {
+             if(!VspecContSRpeaksWeightedCenterA[k])
+               {
+                //Divide results of peak average center weighted index and push
+                VspecContSRpeaksWeightedCenterA[k] = Math.round(VspecContSRpeaksWeighted / VspecContSRpeaksWeightedDivisor);
+                break;
+               }
+             else k++;
+            }
+      }
    }
-}
 
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
 //Calculate peak average center weighted index
 // (∑(peak value * index point)) / ∑(peak value)
 for(i = 0; VspecContSRpeaksA[0].length > i; i++)
    {
     VspecContSRpeaksWeighted += VspecContSRpeaksA[1][i] * VspecContSRpeaksA[0][i];  //Multiply peak value with index value, then add to 'VspecContSRpeaksWeighted'
-    VspecContSRpeaksWeightedDivisor += VspecContSRpeaksA[1][i];             //Add peak values together into 'VspecContSRpeaksWeightedDivisor'
+    VspecContSRpeaksWeightedDivisor += VspecContSRpeaksA[1][i];                     //Add peak values together into 'VspecContSRpeaksWeightedDivisor'
    }
 
 //Divide results of peak average center weighted index
@@ -157,7 +206,7 @@ VspecContSRpeaksWeightedCenter = Math.round(VspecContSRpeaksWeighted / VspecCont
 
 //Add all peak indexes together and divide by quantity
 VspecContSRpeaksAvgCenter = Math.round(VspecContSRpeaksAccume / VspecContSRpeaksA[0].length);
-
+*/
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -172,6 +221,7 @@ for(i = 0; VspecContSR.length > i; i++)
     peakCenterStr = "";
     weightedCenterStr = "";
     
+    /*
     //Identify peak base begin
     j = 0;
     while(VspecContSRpeaksBaseBeginA.length > j)
@@ -195,9 +245,23 @@ for(i = 0; VspecContSR.length > i; i++)
       	   if(VspecContSRpeaksBaseEndA[j] == i) peakBaseEndString = `          <- BASE end (${VspecContSR[i]}) - Index ${i}`;
       	   j++;
       	  }
+    */
     
-    if(i == VspecContSRpeaksAvgCenter) peakCenterStr = `              <====== PEAK AVERAGE CENTER (${VspecContSR[i]}) - Index ${i}`;
-    if(i == VspecContSRpeaksWeightedCenter) weightedCenterStr = `              <====== PEAK WEIGHTED AVERAGE CENTER (${VspecContSR[i]}) - Index ${i}`;
+    //Identify peak average center
+    j = 0;
+    while(VspecContSRpeaksAvgCenterA.length > j)
+         {
+          if(i == VspecContSRpeaksAvgCenterA[j]) peakCenterStr = `              <====== PEAK AVERAGE CENTER (${VspecContSR[i]}) - Index ${i}`;
+          j++;
+         }
+        
+    //Identify peak weighted center
+    j = 0;
+    while(VspecContSRpeaksWeightedCenterA.length > j)
+         {
+          if(i == VspecContSRpeaksWeightedCenterA[j]) weightedCenterStr = `              <====== PEAK WEIGHTED AVERAGE CENTER (${VspecContSR[i]}) - Index ${i}`;
+          j++;
+         }
     
     //Output spectrum display bars
     j = 0;
@@ -216,6 +280,4 @@ for(i = 0; VspecContSR.length > i; i++)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 console.log("\n\n")
 console.log(`Array Length: ${VspecContSR.length}`);
-console.log(`Peak Average Center Index: ${VspecContSRpeaksAvgCenter}`);
-console.log(`Peak Average Center Weighted Index: ${VspecContSRpeaksWeightedCenter}`);
 
