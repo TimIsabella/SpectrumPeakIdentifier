@@ -146,7 +146,7 @@ while((VspecContSRlength + 1) > i)
          //Calculate peak average center weighted index
          // (∑(peak value * index point)) / ∑(peak value)
          j = 0;
-         while(VspecContSRpeaksAlength)
+         while(VspecContSRpeaksAlength > j)
               {
                VspecContSRpeaksWeighted += VspecContSRpeaksA[1][j] * VspecContSRpeaksA[0][j];  //Multiply peak value with index value, then add to 'VspecContSRpeaksWeighted'
                VspecContSRpeaksWeightedDivisor += VspecContSRpeaksA[1][j];                     //Add peak values together into 'VspecContSRpeaksWeightedDivisor'
