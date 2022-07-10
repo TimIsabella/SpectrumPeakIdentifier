@@ -21,6 +21,7 @@ let i, j, k;
 let VspecContSRlength = VspecContSR.length;
 
 let VspecContSRpeaksA = [[], []]; //0 = index, 1 = value
+let VspecContSRpeaksAlength = 0;
 let VspecContSRpeaksAccume = 0;
 
 let VspecContSRpeaksWeighted = 0;
@@ -37,7 +38,6 @@ let outputString = "",
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //TODO - perform same calculations on troughs as for peaks
-//     - Weighted for loop .length needs to be refactored without a method
 //     - Convert main spectrum for loop to while loop to match codebase
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -127,37 +127,44 @@ for(i = -1; (VspecContSRlength + 1) > i; i++)
     if(VspecContSR[i-1] > 0 && (VspecContSR[i] == 0 || VspecContSR[i] == undefined))
       {
        //Push peak average center
-       k = 0;
+       j = 0;
        while(true)
             {
-             if(!VspecContSRpeaksAvgCenterA[k])
+             if(!VspecContSRpeaksAvgCenterA[j])
                {
                 //Add all peak indexes together and divide by quantity and push
-                VspecContSRpeaksAvgCenterA[k] = Math.round(VspecContSRpeaksAccume / VspecContSRpeaksA[0].length);
+                VspecContSRpeaksAvgCenterA[j] = Math.round(VspecContSRpeaksAccume / VspecContSRpeaksA[0].length);
                 break;
                }
-             else k++;
+             else j++;
             }
+       
+       //Get peaks length
+       VspecContSRpeaksAlength = 0;
+       while(true) if(VspecContSRpeaksA[0][VspecContSRpeaksAlength]) VspecContSRpeaksAlength++; else break;;
        
        //Calculate peak average center weighted index
        // (∑(peak value * index point)) / ∑(peak value)
-       for(k = 0; VspecContSRpeaksA[0].length > k; k++)
-          {
-           VspecContSRpeaksWeighted += VspecContSRpeaksA[1][k] * VspecContSRpeaksA[0][k];  //Multiply peak value with index value, then add to 'VspecContSRpeaksWeighted'
-           VspecContSRpeaksWeightedDivisor += VspecContSRpeaksA[1][k];                     //Add peak values together into 'VspecContSRpeaksWeightedDivisor'
-          }
+       j = 0;
+       while(j < VspecContSRpeaksAlength)
+            {
+             VspecContSRpeaksWeighted += VspecContSRpeaksA[1][j] * VspecContSRpeaksA[0][j];  //Multiply peak value with index value, then add to 'VspecContSRpeaksWeighted'
+             VspecContSRpeaksWeightedDivisor += VspecContSRpeaksA[1][j];                     //Add peak values together into 'VspecContSRpeaksWeightedDivisor'
+                
+             j++;
+            }
        
        //Push peak weighted center
-       k = 0;
+       j = 0;
        while(true)
             {
-             if(!VspecContSRpeaksWeightedCenterA[k])
+             if(!VspecContSRpeaksWeightedCenterA[j])
                {
                 //Divide results of peak average center weighted index and push
-                VspecContSRpeaksWeightedCenterA[k] = Math.round(VspecContSRpeaksWeighted / VspecContSRpeaksWeightedDivisor);
+                VspecContSRpeaksWeightedCenterA[j] = Math.round(VspecContSRpeaksWeighted / VspecContSRpeaksWeightedDivisor);
                 break;
                }
-             else k++;
+             else j++;
             }
       }
    }
@@ -204,6 +211,3 @@ for(i = 0; VspecContSR.length > i; i++)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 console.log("\n\n")
 console.log(`Array Length: ${VspecContSR.length}`);
-
-console.log(`VspecContSRpeaksAvgCenterA: ${VspecContSRpeaksAvgCenterA}`);
-console.log(`VspecContSRpeaksWeightedCenterA: ${VspecContSRpeaksWeightedCenterA}`);
