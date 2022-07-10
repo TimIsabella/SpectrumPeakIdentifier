@@ -6,10 +6,12 @@
 //let VspecContSR = [0, 0, 2, 4, 7, 6, 10, 10, 6, 3, 5, 6, 9, 12, 6, 2, 5, 9, 5, 3, 4, 10, 20, 15, 12, 13, 9, 8, 10, 10, 9, 5, 0];
 //let VspecContSR = [0, 1, 2, 3, 33, 3, 2, 1, 2, 3, 20, 25, 26, 26, 26, 3, 2, 1, 1, 1, 1, 1, 1, 2, 3, 44, 3, 2, 1, 0];
 //let VspecContSR = [0, 1, 3, 4, 11, 3, 2, 1, 0];
-let VspecContSR = [0,9,2,8,13,22,19,15,8,18,14,6,9,21,20,18,9,16,2,15,9,16,4,0,0,8,3,8,16,8,5,19,4,12,3,10,10,13,8,21,4,1,0,0,16,19,3,6,14,21,22,15,19,19,22,19,9,22,5,7,7,0,0,14,8,7,2,3,13,19,6,11,2,8,7,14,16,21,22,19,4,0,0,5,16,14,12,19,19,8,19,3,0,0,12,17,17,13,21,14,12,7,20,18,17,19,15,7,21,21,14,8,0,0,0,2,17,20,14,5,19,17,5,1,15,0];
+//let VspecContSR = [0,9,2,8,13,22,19,15,8,18,14,6,9,21,20,18,9,16,2,15,9,16,4,0,0,8,3,8,16,8,5,19,4,12,3,10,10,13,8,21,4,1,0,0,16,19,3,6,14,21,22,15,19,19,22,19,9,22,5,7,7,0,0,14,8,7,2,3,13,19,6,11,2,8,7,14,16,21,22,19,4,0,0,5,16,14,12,19,19,8,19,3,0,0,12,17,17,13,21,14,12,7,20,18,17,19,15,7,21,21,14,8,0,0,0,2,17,20,14,5,19,17,5,1,15,0];
 //let VspecContSR = [0, 1, 2, 3, 33, 3, 2, 5, 10, 22, 7, 8, 2, 1, 0, 0, 0, 2, 3, 20, 25, 26, 26, 26, 3, 8, 5, 2, 1, 8, 9, 11, 7, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 3, 44, 3, 2, 1, 0];
-
 //let VspecContSR = [0, 1, 6, 9, 11, 9, 6, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 1, 0, 1, 6, 9, 11, 9, 22, 9, 33, 9, 44, 9, 6, 1, 0, 1, 6, 9, 9, 9, 9, 6, 1, 0, 1, 6, 9, 9, 9, 6, 1, 6, 33, 33, 33, 6, 1, 0, 1, 6, 9, 66, 9, 3, 1, 3, 9, 11, 9, 6, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 66, 9, 6, 1, 0];
+
+//https://www.randomnumberapi.com/api/v1.0/random?min=0&max=66&count=111
+let VspecContSR = [0, 0, 6, 1, 7, 8, 10, 11, 3, 4, 7, 4, 5, 1, 11, 0, 0, 1, 4, 6, 4, 4, 3, 11, 1, 4, 11, 1, 9, 2, 8, 2, 11, 3, 4, 10, 2, 7, 9, 2, 11, 3, 4, 8, 8, 0, 2, 6, 0, 6, 9, 5, 0, 0, 11, 1, 2, 2, 2, 7, 0, 1, 4, 11, 11, 0, 2, 9, 0, 3, 11, 5, 4, 11, 11, 10, 2, 8, 3, 4, 7, 3, 8, 4, 1, 0, 9, 8, 5, 10, 11, 10, 2, 9, 1, 4, 10, 1, 9, 2, 11, 0, 33, 0, 1, 3, 4, 3, 2, 10, 0];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -35,17 +37,17 @@ let outputString = "",
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //TODO - perform same calculations on troughs as for peaks
-//     - If last element of VspecContSR doesn't end in a zero, the 'base end' does not get identified
 //     - Weighted for loop .length needs to be refactored without a method
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Establish points for spectrum
-for(i = 0; VspecContSRlength > i; i++)
+//-1 and VspecContSRlength + 1 ensures edge case checks before and after the spectrum 
+for(i = -1; (VspecContSRlength + 1) > i; i++)
    {
-    //Identify peak base begin
-    if((VspecContSR[i-1] == 0) && (VspecContSR[i] > 0))
+    //Identify peak base begin (undefined for before the spectrum)
+    if((VspecContSR[i-1] == 0 && VspecContSR[i] > 0) || (VspecContSR[i-1] == undefined && VspecContSR[i] > 0))
       {
        //Clear in preparation for new SR cloud
        VspecContSRpeaksA = [[],[]];
@@ -120,7 +122,7 @@ for(i = 0; VspecContSRlength > i; i++)
       }
 
     //Identify peak base end
-    if((VspecContSR[i-1] > 0) && (VspecContSR[i] == 0)) 
+    if((VspecContSR[i-1] > 0 && VspecContSR[i] == 0) || (VspecContSR[i-1] > 0 && VspecContSR[i] == undefined))
       {
        //Push peak average center
        k = 0;
@@ -201,3 +203,5 @@ for(i = 0; VspecContSR.length > i; i++)
 console.log("\n\n")
 console.log(`Array Length: ${VspecContSR.length}`);
 
+console.log(`VspecContSRpeaksAvgCenterA: ${VspecContSRpeaksAvgCenterA}`);
+console.log(`VspecContSRpeaksWeightedCenterA: ${VspecContSRpeaksWeightedCenterA}`);
