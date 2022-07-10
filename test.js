@@ -48,7 +48,6 @@ i = -1;
 while((VspecContSRlength + 1) > i)
      {
       //Identify peak base begin (undefined for before the spectrum)
-      //if((VspecContSR[i-1] == 0 && VspecContSR[i] > 0) || (VspecContSR[i-1] == undefined && VspecContSR[i] > 0))
       if((VspecContSR[i-1] == 0 || VspecContSR[i-1] == undefined) && VspecContSR[i] > 0)
         {
          //Clear in preparation for new SR cloud
