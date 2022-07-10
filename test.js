@@ -122,7 +122,11 @@ while((VspecContSRlength + 1) > i)
                  }
      	     }
         }
-  
+      
+      //Get peaks length
+      VspecContSRpeaksAlength = 0;
+      while(true) if(VspecContSRpeaksA[0][VspecContSRpeaksAlength]) VspecContSRpeaksAlength++; else break;
+      
       //Identify peak base end (undefined for after the spectrum)
       if(VspecContSR[i-1] > 0 && (VspecContSR[i] == 0 || VspecContSR[i] == undefined))
         {
@@ -133,7 +137,7 @@ while((VspecContSRlength + 1) > i)
                if(!VspecContSRpeaksAvgCenterA[j])
                  {
                   //Add all peak indexes together and divide by quantity and push
-                  VspecContSRpeaksAvgCenterA[j] = Math.round(VspecContSRpeaksAccume / VspecContSRpeaksA[0].length);
+                  VspecContSRpeaksAvgCenterA[j] = Math.round(VspecContSRpeaksAccume / VspecContSRpeaksAlength);
                   break;
                  }
                else j++;
@@ -142,7 +146,7 @@ while((VspecContSRlength + 1) > i)
          //Calculate peak average center weighted index
          // (∑(peak value * index point)) / ∑(peak value)
          j = 0;
-         while(VspecContSRpeaksA[0][j])
+         while(VspecContSRpeaksAlength)
               {
                VspecContSRpeaksWeighted += VspecContSRpeaksA[1][j] * VspecContSRpeaksA[0][j];  //Multiply peak value with index value, then add to 'VspecContSRpeaksWeighted'
                VspecContSRpeaksWeightedDivisor += VspecContSRpeaksA[1][j];                     //Add peak values together into 'VspecContSRpeaksWeightedDivisor'
@@ -163,7 +167,7 @@ while((VspecContSRlength + 1) > i)
                else j++;
               }
         }
-        
+      
       i++;
      }
 
