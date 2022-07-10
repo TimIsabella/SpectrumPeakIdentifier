@@ -38,6 +38,7 @@ let outputString = "",
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //TODO - perform same calculations on troughs as for peaks
 //     - Weighted for loop .length needs to be refactored without a method
+//     - Convert main spectrum for loop to while loop to match codebase
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -47,7 +48,8 @@ let outputString = "",
 for(i = -1; (VspecContSRlength + 1) > i; i++)
    {
     //Identify peak base begin (undefined for before the spectrum)
-    if((VspecContSR[i-1] == 0 && VspecContSR[i] > 0) || (VspecContSR[i-1] == undefined && VspecContSR[i] > 0))
+    //if((VspecContSR[i-1] == 0 && VspecContSR[i] > 0) || (VspecContSR[i-1] == undefined && VspecContSR[i] > 0))
+    if((VspecContSR[i-1] == 0 || VspecContSR[i-1] == undefined) && VspecContSR[i] > 0)
       {
        //Clear in preparation for new SR cloud
        VspecContSRpeaksA = [[],[]];
@@ -121,8 +123,8 @@ for(i = -1; (VspecContSRlength + 1) > i; i++)
    	     }
       }
 
-    //Identify peak base end
-    if((VspecContSR[i-1] > 0 && VspecContSR[i] == 0) || (VspecContSR[i-1] > 0 && VspecContSR[i] == undefined))
+    //Identify peak base end (undefined for after the spectrum)
+    if(VspecContSR[i-1] > 0 && (VspecContSR[i] == 0 || VspecContSR[i] == undefined))
       {
        //Push peak average center
        k = 0;
