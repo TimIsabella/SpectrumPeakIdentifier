@@ -139,14 +139,10 @@ while((VspecContSRlength + 1) > i)
                else j++;
               }
          
-         //Get peaks length
-         VspecContSRpeaksAlength = 0;
-         while(true) if(VspecContSRpeaksA[0][VspecContSRpeaksAlength]) VspecContSRpeaksAlength++; else break;;
-         
          //Calculate peak average center weighted index
          // (∑(peak value * index point)) / ∑(peak value)
          j = 0;
-         while(j < VspecContSRpeaksAlength)
+         while(VspecContSRpeaksA[0][j])
               {
                VspecContSRpeaksWeighted += VspecContSRpeaksA[1][j] * VspecContSRpeaksA[0][j];  //Multiply peak value with index value, then add to 'VspecContSRpeaksWeighted'
                VspecContSRpeaksWeightedDivisor += VspecContSRpeaksA[1][j];                     //Add peak values together into 'VspecContSRpeaksWeightedDivisor'
@@ -216,7 +212,8 @@ for(i = 0; VspecContSR.length > i; i++)
    }
 
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 console.log("\n\n")
 console.log(`Array Length: ${VspecContSR.length}`);
