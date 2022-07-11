@@ -44,8 +44,6 @@ let outputString = "",
 //     - Zero index edge case: if spectrum index zero is as a peak gets missed (could default index 0 to always be zero?)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-            //Establish points for spectrum
             //ArrayInitialize(VspecContSRpeaksAvgCenterA, 0);
             //ArrayInitialize(VspecContSRpeaksWeightedCenterA, 0);
             
