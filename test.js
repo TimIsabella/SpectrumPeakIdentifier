@@ -28,11 +28,11 @@ let VspecContSRpeaksAv = new Array(CycIteration).fill(0); //value
 let VspecContSRpeaksPlateauCount = 0;
 let VspecContSRpeaksAlength = 0;
 let VspecContSRpeaksAccume = 0;
-let VspecContSRpeaksAvgCenterA = new Array(CycIteration).fill(0); //Null solves the zero index edge case
+let VspecContSRpeaksAvgCenterA = new Array(CycIteration).fill(0); //Filling with zeros to simulate codebase
 
 let VspecContSRpeaksWeighted = 0;
 let VspecContSRpeaksWeightedDivisor = 0;
-let VspecContSRpeaksWeightedCenterA = new Array(CycIteration).fill(0); //Null solves the zero index edge case
+let VspecContSRpeaksWeightedCenterA = new Array(CycIteration).fill(0); //Filling with zeros to simulate codebase
 
 let outputString = "",
     weightedCenterStr = "",
