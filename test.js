@@ -28,11 +28,11 @@ let VspecContSRpeaksAv = new Array(CycIteration).fill(0); //value
 let VspecContSRpeaksPlateauCount = 0;
 let VspecContSRpeaksAlength = 0;
 let VspecContSRpeaksAccume = 0;
-let VspecContSRpeaksAvgCenterA = new Array(CycIteration).fill(null); //Null solves the zero index edge case
+let VspecContSRpeaksAvgCenterA = new Array(CycIteration).fill(0); //Null solves the zero index edge case
 
 let VspecContSRpeaksWeighted = 0;
 let VspecContSRpeaksWeightedDivisor = 0;
-let VspecContSRpeaksWeightedCenterA = new Array(CycIteration).fill(null); //Null solves the zero index edge case
+let VspecContSRpeaksWeightedCenterA = new Array(CycIteration).fill(0); //Null solves the zero index edge case
 
 let outputString = "",
     weightedCenterStr = "",
@@ -49,13 +49,13 @@ let outputString = "",
             //ArrayInitialize(VspecContSRpeaksAvgCenterA, 0);
             //ArrayInitialize(VspecContSRpeaksWeightedCenterA, 0);
             
-            //Clear array
+            //Reset array to nulls
             i = 0;
-            while(j < CycIteration) {VspecContSRpeaksAvgCenterA[i] = 0; i++;}
+            while(i < CycIteration) {VspecContSRpeaksAvgCenterA[i] = null; i++;}
                      
-            //Clear array
+            //Reset array to nulls
             i = 0;
-            while(j < CycIteration) {VspecContSRpeaksWeightedCenterA[i] = 0; i++;}
+            while(i < CycIteration) {VspecContSRpeaksWeightedCenterA[i] = null; i++;}
             
             ///////////////////////////////////////////////
             ///////////Begin peak identifications///////////
