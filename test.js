@@ -7,12 +7,13 @@
 //let VspecContSR = [0, 0, 6, 1, 7, 8, 10, 11, 3, 4, 7, 4, 5, 1, 11, 0, 0, 1, 4, 6, 4, 4, 3, 11, 1, 4, 11, 1, 9, 2, 8, 2, 11, 3, 4, 10, 2, 7, 9, 2, 11, 3, 4, 8, 8, 0, 2, 6, 0, 6, 9, 5, 0, 0, 11, 1, 2, 2, 2, 7, 0, 1, 4, 11, 11, 0, 2, 9, 0, 3, 11, 5, 4, 11, 11, 10, 2, 8, 3, 4, 7, 3, 8, 4, 1, 0, 9, 8, 5, 10, 11, 10, 2, 9, 1, 4, 10, 1, 9, 2, 11, 0, 33, 0, 1, 3, 4, 3, 2, 10, 0];
 //let VspecContSR = [0, 0, 2, 4, 7, 6, 10, 10, 6, 3, 5, 6, 9, 12, 6, 2, 5, 9, 5, 3, 4, 10, 20, 15, 12, 13, 9, 8, 10, 10, 9, 5, 0];
 //let VspecContSR = [0, 1, 2, 3, 33, 3, 2, 1, 2, 3, 20, 25, 26, 26, 26, 3, 2, 1, 1, 1, 1, 1, 1, 2, 3, 44, 3, 2, 1, 0];
-//let VspecContSR = [0, 1, 3, 4, 11, 3, 2, 1, 0];
+//let VspecContSR = [0, 0, 0, 1, 3, 4, 11, 3, 2, 1, 0];
+//let VspecContSR = [11, 9, 6, 3, 0, 3, 6, 9, 11];
 //let VspecContSR = [0,9,2,8,13,22,19,15,8,18,14,6,9,21,20,18,9,16,2,15,9,16,4,0,0,8,3,8,16,8,5,19,4,12,3,10,10,13,8,21,4,1,0,0,16,19,3,6,14,21,22,15,19,19,22,19,9,22,5,7,7,0,0,14,8,7,2,3,13,19,6,11,2,8,7,14,16,21,22,19,4,0,0,5,16,14,12,19,19,8,19,3,0,0,12,17,17,13,21,14,12,7,20,18,17,19,15,7,21,21,14,8,0,0,0,2,17,20,14,5,19,17,5,1,15,0];
 //let VspecContSR = [0, 1, 2, 3, 33, 3, 2, 5, 10, 22, 7, 8, 2, 1, 0, 0, 0, 2, 3, 20, 25, 26, 26, 26, 3, 8, 5, 2, 1, 8, 9, 11, 7, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 3, 44, 3, 2, 1, 0];
 
 //Demonstrate all cases
-let VspecContSR = [1, 6, 9, 11, 9, 6, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 1, 0, 1, 6, 9, 11, 9, 22, 9, 33, 9, 66, 9, 99, 9, 6, 1, 0, 1, 6, 9, 9, 9, 9, 9, 6, 1, 0, 1, 6, 9, 9, 9, 6, 1, 6, 33, 33, 33, 6, 1, 0, 1, 3, 6, 9, 66, 9, 6, 3, 1, 3, 6, 9, 6, 3, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 66, 9, 6, 1, 0, 1, 6, 9, 6, 6, 6, 6, 6, 6, 6, 66, 6, 1];
+let VspecContSR = [0, 11, 6, 3, 0, 1, 6, 9, 11, 9, 6, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 1, 0, 1, 6, 9, 11, 9, 22, 9, 33, 9, 66, 9, 99, 9, 6, 1, 0, 1, 6, 9, 9, 9, 9, 9, 6, 1, 0, 1, 6, 9, 9, 9, 6, 1, 6, 33, 33, 33, 6, 1, 0, 1, 3, 6, 9, 66, 9, 6, 3, 1, 3, 6, 9, 6, 3, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 66, 9, 6, 1, 0, 1, 6, 9, 6, 6, 6, 6, 6, 6, 6, 66, 6, 1, 0, 3, 6, 9, 6, 9, 6, 9, 6];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -20,31 +21,28 @@ let i, j, k;
 
 let CycIteration = VspecContSR.length;
 
-let VspecContSRpeaksAi = []; //index
-    VspecContSRpeaksAi.fill(0, 0, 1111);
+let VspecContSRpeaksAi = new Array(CycIteration).fill(0); //index
     
-let VspecContSRpeaksAv = []; //value
-    VspecContSRpeaksAv.fill(0, 0, 1111);
+let VspecContSRpeaksAv = new Array(CycIteration).fill(0); //value
 
 let VspecContSRpeaksPlateauCount = 0;
 let VspecContSRpeaksAlength = 0;
 let VspecContSRpeaksAccume = 0;
-let VspecContSRpeaksAvgCenterA = [];
-    VspecContSRpeaksAvgCenterA.fill(0, 0, 1111);
+let VspecContSRpeaksAvgCenterA = new Array(CycIteration).fill(null); //Null solves the zero index edge case
 
 let VspecContSRpeaksWeighted = 0;
 let VspecContSRpeaksWeightedDivisor = 0;
-let VspecContSRpeaksWeightedCenterA = [];
-    VspecContSRpeaksWeightedCenterA.fill(0, 0, 1111);
+let VspecContSRpeaksWeightedCenterA = new Array(CycIteration).fill(null); //Null solves the zero index edge case
 
 let outputString = "",
     weightedCenterStr = "",
     peakCenterStr = "";
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //TODO - perform same calculations on troughs as for peaks
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//     - Zero index edge case: if spectrum index zero is as a peak gets missed (could default index 0 to always be zero?)
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
             //Establish points for spectrum
@@ -59,23 +57,22 @@ let outputString = "",
             i = 0;
             while(j < CycIteration) {VspecContSRpeaksWeightedCenterA[i] = 0; i++;}
             
-            //-1 and CycIteration + 1 ensures edge case checks before and after the array
-            i = -1;
+            ///////////////////////////////////////////////
+            ///////////Begin peak identifications///////////
+            i = 0;
             while(i < (CycIteration + 1))
                  {
-                      
-                  //Identify peak base begin (undefined for before the spectrum)
-                  if((VspecContSR[i-1] == 0 || VspecContSR[i-1] == undefined) && VspecContSR[i] > 0)
+                  ///////////BASE BEGIN///////////
+                  //Identify peak base begin (undefined for before the spectrum) (i-1 < 0 for before the spectrum)
+                  if((VspecContSR[i-1] == 0 || i-1 < 0) && VspecContSR[i] > 0)
                     {
-                     //Clear array
-                     //Index point of peak
+                     //Clear peak index array
                      j = 0;
-                     while(j < CycIteration) {VspecContSRpeaksAi[j] = 0; j++;}
+                     while(VspecContSRpeaksAv[j]) {VspecContSRpeaksAi[j] = 0; j++;}
                      
-                     //Clear array
-                     //Value of peak
+                     //Clear peak value array
                      j = 0;
-                     while(j < CycIteration) {VspecContSRpeaksAv[j] = 0; j++;}
+                     while(VspecContSRpeaksAv[j]) {VspecContSRpeaksAv[j] = 0; j++;}
                      
                      VspecContSRpeaksPlateauCount = 0;
                      VspecContSRpeaksWeighted = 0;        
@@ -86,8 +83,8 @@ let outputString = "",
                   //Identify peak beginning (lower to higher)
                   if(VspecContSR[i-1] < VspecContSR[i]) 
                     {
-                     //If peak falling (higher to lower)
-                     if(VspecContSR[i] > VspecContSR[i+1])
+                     //If peak falling (higher to lower), (i+1 == CycIteration check for after the spectrum)
+                     if((VspecContSR[i] > VspecContSR[i+1]) || i+1 == CycIteration)
                        {
                         //Push peak
                         j = 0;
@@ -95,8 +92,8 @@ let outputString = "",
                              {
                               if(!VspecContSRpeaksAv[j]) 
                                 {
-                                 VspecContSRpeaksAi[j] = i; //Push index
-                                 VspecContSRpeaksAv[j] = VspecContSR[i]; //Push value
+                                 VspecContSRpeaksAi[j] = i;               //Push index
+                                 VspecContSRpeaksAv[j] = VspecContSR[i];  //Push value
                                  
                                  break;
                                 }
@@ -149,35 +146,11 @@ let outputString = "",
                   
                   //Get peaks length
                   VspecContSRpeaksAlength = 0;
-                  while(true) if(VspecContSRpeaksAv[VspecContSRpeaksAlength]) VspecContSRpeaksAlength++; else break;
+                  while(VspecContSRpeaksAv[VspecContSRpeaksAlength]) VspecContSRpeaksAlength++;
                   
-                  /*
-                  Comment(
-                           "\n VspecContSR[25]: ", VspecContSR[25],
-                           "\n VspecContSR[26]: ", VspecContSR[26],
-                           "\n VspecContSR[27]: ", VspecContSR[27],
-                           "\n VspecContSR[28]: ", VspecContSR[28],
-                           "\n VspecContSR[29]: ", VspecContSR[29],
-                           
-                           "\n VspecContSRpeaksAi[0]: ", VspecContSRpeaksAi[0],
-                           "\n VspecContSRpeaksAi[1]: ", VspecContSRpeaksAi[1],
-                           "\n VspecContSRpeaksAi[2]: ", VspecContSRpeaksAi[2],
-                           "\n VspecContSRpeaksAi[3]: ", VspecContSRpeaksAi[3],
-                           "\n VspecContSRpeaksAi[4]: ", VspecContSRpeaksAi[4],
-                           
-                           "\n VspecContSRpeaksAv[0]: ", VspecContSRpeaksAv[0],
-                           "\n VspecContSRpeaksAv[1]: ", VspecContSRpeaksAv[1],
-                           "\n VspecContSRpeaksAv[2]: ", VspecContSRpeaksAv[2],
-                           "\n VspecContSRpeaksAv[3]: ", VspecContSRpeaksAv[3],
-                           "\n VspecContSRpeaksAv[4]: ", VspecContSRpeaksAv[4],
-                           
-                           "\n VspecContSRpeaksAlength: ", VspecContSRpeaksAlength,
-                           "\n "
-                          );
-                  */
-                  
-                  //Identify peak base end (undefined for after the spectrum)
-                  if(VspecContSR[i-1] > 0 && (VspecContSR[i] == 0 || VspecContSR[i] == undefined))
+                  ///////////BASE END///////////
+                  //Identify peak base end (i+1 == CycIteration check for after the spectrum)
+                  if(VspecContSR[i] > 0 && (VspecContSR[i+1] == 0 || i+1 == CycIteration))
                     {
                      //Push peak average center
                      j = 0;
