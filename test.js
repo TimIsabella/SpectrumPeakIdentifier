@@ -18,18 +18,24 @@ let VspecContSR = [1, 6, 9, 11, 9, 6, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 1, 0, 
 
 let i, j, k;
 
-let VspecContSRlength = VspecContSR.length;
+let CycIteration = VspecContSR.length;
 
-let VspecContSRpeaksA = [[], []]; //0 = index, 1 = value
+let VspecContSRpeaksAi = []; //index
+    VspecContSRpeaksAi.fill(0, 0, 1111);
+    
+let VspecContSRpeaksAv = []; //value
+    VspecContSRpeaksAv.fill(0, 0, 1111);
+
+let VspecContSRpeaksPlateauCount = 0;
 let VspecContSRpeaksAlength = 0;
 let VspecContSRpeaksAccume = 0;
+let VspecContSRpeaksAvgCenterA = [];
+    VspecContSRpeaksAvgCenterA.fill(0, 0, 1111);
 
 let VspecContSRpeaksWeighted = 0;
 let VspecContSRpeaksWeightedDivisor = 0;
 let VspecContSRpeaksWeightedCenterA = [];
-
-let VspecContSRpeaksPlateauCount = 0;
-let VspecContSRpeaksAvgCenterA = [];
+    VspecContSRpeaksWeightedCenterA.fill(0, 0, 1111);
 
 let outputString = "",
     weightedCenterStr = "",
@@ -41,134 +47,179 @@ let outputString = "",
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Establish points for spectrum
-//-1 and VspecContSRlength + 1 ensures edge case checks before and after the array
-i = -1;
-while((VspecContSRlength + 1) > i)
-     {
-      //Identify peak base begin (undefined for before the spectrum)
-      if((VspecContSR[i-1] == 0 || VspecContSR[i-1] == undefined) && VspecContSR[i] > 0)
-        {
-         //Clear in preparation for new SR cloud
-         VspecContSRpeaksA = [[],[]];
-         VspecContSRpeaksPlateauCount = 0;
-         VspecContSRpeaksWeighted = 0;        
-         VspecContSRpeaksWeightedDivisor = 0;
-         VspecContSRpeaksAccume = 0;
-        }
-      
-      //Identify peak beginning (lower to higher)
-      if(VspecContSR[i-1] < VspecContSR[i]) 
-        {
-         //If peak falling (higher to lower)
-         if(VspecContSR[i] > VspecContSR[i+1])
-           {
-            //Push peak
-            k = 0;
-            while(true)
-                 {
-                  if(!VspecContSRpeaksA[0][k]) 
-                    {
-                     VspecContSRpeaksA[0][k] = i; //Push index
-                     VspecContSRpeaksA[1][k] = VspecContSR[i]; //Push value
-                     
-                     break;
-                    }
-                  else k++;
-                 }
-           
-            VspecContSRpeaksAccume += i;
-           }
-         
-         //If peak plateau (flat top)
-         if(VspecContSR[i] == VspecContSR[i+1])
-           {
-            VspecContSRpeaksPlateauCount = 0;
-            j = 0;
+            //Establish points for spectrum
+            //ArrayInitialize(VspecContSRpeaksAvgCenterA, 0);
+            //ArrayInitialize(VspecContSRpeaksWeightedCenterA, 0);
             
-            //Check if next points (top of spectrum down) match and add to plateau count
-            while(true)
+            //Clear array
+            i = 0;
+            while(j < CycIteration) {VspecContSRpeaksAvgCenterA[i] = 0; i++;}
+                     
+            //Clear array
+            i = 0;
+            while(j < CycIteration) {VspecContSRpeaksWeightedCenterA[i] = 0; i++;}
+            
+            //-1 and CycIteration + 1 ensures edge case checks before and after the array
+            i = -1;
+            while(i < (CycIteration + 1))
                  {
-                  //If plateau end at a fall, plateau complete, push peak point and break loop
-                  if(VspecContSR[i+j] > VspecContSR[i+1+j])
+                      
+                  //Identify peak base begin (undefined for before the spectrum)
+                  if((VspecContSR[i-1] == 0 || VspecContSR[i-1] == undefined) && VspecContSR[i] > 0)
                     {
-                     //Push peak
-                     k = 0;
+                     //Clear array
+                     //Index point of peak
+                     j = 0;
+                     while(j < CycIteration) {VspecContSRpeaksAi[j] = 0; j++;}
+                     
+                     //Clear array
+                     //Value of peak
+                     j = 0;
+                     while(j < CycIteration) {VspecContSRpeaksAv[j] = 0; j++;}
+                     
+                     VspecContSRpeaksPlateauCount = 0;
+                     VspecContSRpeaksWeighted = 0;        
+                     VspecContSRpeaksWeightedDivisor = 0;
+                     VspecContSRpeaksAccume = 0;
+                    }
+                  
+                  //Identify peak beginning (lower to higher)
+                  if(VspecContSR[i-1] < VspecContSR[i]) 
+                    {
+                     //If peak falling (higher to lower)
+                     if(VspecContSR[i] > VspecContSR[i+1])
+                       {
+                        //Push peak
+                        j = 0;
+                        while(true)
+                             {
+                              if(!VspecContSRpeaksAv[j]) 
+                                {
+                                 VspecContSRpeaksAi[j] = i; //Push index
+                                 VspecContSRpeaksAv[j] = VspecContSR[i]; //Push value
+                                 
+                                 break;
+                                }
+                              else j++;
+                             }
+                       
+                        VspecContSRpeaksAccume += i;
+                       }
+                     
+                     //If peak plateau (flat top)
+                     if(VspecContSR[i] == VspecContSR[i+1])
+                       {
+                        VspecContSRpeaksPlateauCount = 0;
+                        
+                        //Check if next points (top of spectrum down) match and add to plateau count
+                        j = 0;
+                        while(true)
+                             {
+                              //If plateau end at a fall, plateau complete, push peak point and break loop
+                              if(VspecContSR[i+j] > VspecContSR[i+1+j])
+                                {
+                                 //Push peak
+                                 k = 0;
+                                 while(true)
+                                      {
+                                       if(!VspecContSRpeaksAv[k])
+                                         {
+                                          VspecContSRpeaksAi[k] = i + Math.round(VspecContSRpeaksPlateauCount / 2); //Push index
+                                          l = i + Math.round(VspecContSRpeaksPlateauCount / 2);
+                                          VspecContSRpeaksAv[k] = VspecContSR[l]; //Push value
+                                          
+                                          break;
+                                         }
+                                       else k++;
+                                      }
+                                 
+                                 VspecContSRpeaksAccume += i + Math.round(VspecContSRpeaksPlateauCount / 2);
+                                 
+                                 break;
+                                }
+                               
+                              VspecContSRpeaksPlateauCount++;
+                              j++;
+                              
+                              //If plateau ends in rise then break loop disregarding calculation (peak continuation)
+                              if(VspecContSR[i+j] < VspecContSR[i+1+j]) break;
+                             }
+                 	     }
+                    }
+                  
+                  //Get peaks length
+                  VspecContSRpeaksAlength = 0;
+                  while(true) if(VspecContSRpeaksAv[VspecContSRpeaksAlength]) VspecContSRpeaksAlength++; else break;
+                  
+                  /*
+                  Comment(
+                           "\n VspecContSR[25]: ", VspecContSR[25],
+                           "\n VspecContSR[26]: ", VspecContSR[26],
+                           "\n VspecContSR[27]: ", VspecContSR[27],
+                           "\n VspecContSR[28]: ", VspecContSR[28],
+                           "\n VspecContSR[29]: ", VspecContSR[29],
+                           
+                           "\n VspecContSRpeaksAi[0]: ", VspecContSRpeaksAi[0],
+                           "\n VspecContSRpeaksAi[1]: ", VspecContSRpeaksAi[1],
+                           "\n VspecContSRpeaksAi[2]: ", VspecContSRpeaksAi[2],
+                           "\n VspecContSRpeaksAi[3]: ", VspecContSRpeaksAi[3],
+                           "\n VspecContSRpeaksAi[4]: ", VspecContSRpeaksAi[4],
+                           
+                           "\n VspecContSRpeaksAv[0]: ", VspecContSRpeaksAv[0],
+                           "\n VspecContSRpeaksAv[1]: ", VspecContSRpeaksAv[1],
+                           "\n VspecContSRpeaksAv[2]: ", VspecContSRpeaksAv[2],
+                           "\n VspecContSRpeaksAv[3]: ", VspecContSRpeaksAv[3],
+                           "\n VspecContSRpeaksAv[4]: ", VspecContSRpeaksAv[4],
+                           
+                           "\n VspecContSRpeaksAlength: ", VspecContSRpeaksAlength,
+                           "\n "
+                          );
+                  */
+                  
+                  //Identify peak base end (undefined for after the spectrum)
+                  if(VspecContSR[i-1] > 0 && (VspecContSR[i] == 0 || VspecContSR[i] == undefined))
+                    {
+                     //Push peak average center
+                     j = 0;
                      while(true)
                           {
-                           if(!VspecContSRpeaksA[0][k])
+                           if(!VspecContSRpeaksAvgCenterA[j])
                              {
-                              VspecContSRpeaksA[0][k] = i + Math.round(VspecContSRpeaksPlateauCount / 2); //Push index
-                              VspecContSRpeaksA[1][k] = VspecContSR[i + Math.round(VspecContSRpeaksPlateauCount / 2)]; //Push value
-                              
+                              //Add all peak indexes together and divide by quantity and push
+                              VspecContSRpeaksAvgCenterA[j] = Math.round(VspecContSRpeaksAccume / VspecContSRpeaksAlength);
                               break;
                              }
-                           else k++;
+                           else j++;
                           }
                      
-                     VspecContSRpeaksAccume += i + Math.round(VspecContSRpeaksPlateauCount / 2);
+                     //Calculate peak average center weighted index
+                     // (∑(peak value * index point)) / ∑(peak value)
+                     j = 0;
+                     while(j < VspecContSRpeaksAlength)
+                          {
+                           VspecContSRpeaksWeighted += VspecContSRpeaksAv[j] * VspecContSRpeaksAi[j];  //Multiply peak value with index value, then add to 'VspecContSRpeaksWeighted'
+                           VspecContSRpeaksWeightedDivisor += VspecContSRpeaksAv[j];                   //Add peak values together into 'VspecContSRpeaksWeightedDivisor'
+                              
+                           j++;
+                          }
                      
-                     break;
+                     //Push peak weighted center
+                     j = 0;
+                     while(true)
+                          {
+                           if(!VspecContSRpeaksWeightedCenterA[j])
+                             {
+                              //Divide results of peak average center weighted index and push
+                              VspecContSRpeaksWeightedCenterA[j] = Math.round(VspecContSRpeaksWeighted / VspecContSRpeaksWeightedDivisor);
+                              break;
+                             }
+                           else j++;
+                          }
                     }
-                   
-                  VspecContSRpeaksPlateauCount++;
-                  j++;
                   
-                  //If plateau ends in rise then break loop disregarding calculation (peak continuation)
-                  if(VspecContSR[i+j] < VspecContSR[i+1+j]) break;
+                  i++;
                  }
-     	     }
-        }
-      
-      //Get peaks length
-      VspecContSRpeaksAlength = 0;
-      while(true) if(VspecContSRpeaksA[0][VspecContSRpeaksAlength]) VspecContSRpeaksAlength++; else break;
-      
-      //Identify peak base end (undefined for after the spectrum)
-      if(VspecContSR[i-1] > 0 && (VspecContSR[i] == 0 || VspecContSR[i] == undefined))
-        {
-         //Push peak average center
-         j = 0;
-         while(true)
-              {
-               if(!VspecContSRpeaksAvgCenterA[j])
-                 {
-                  //Add all peak indexes together and divide by quantity and push
-                  VspecContSRpeaksAvgCenterA[j] = Math.round(VspecContSRpeaksAccume / VspecContSRpeaksAlength);
-                  break;
-                 }
-               else j++;
-              }
-         
-         //Calculate peak average center weighted index
-         // (∑(peak value * index point)) / ∑(peak value)
-         j = 0;
-         while(VspecContSRpeaksAlength > j)
-              {
-               VspecContSRpeaksWeighted += VspecContSRpeaksA[1][j] * VspecContSRpeaksA[0][j];  //Multiply peak value with index value, then add to 'VspecContSRpeaksWeighted'
-               VspecContSRpeaksWeightedDivisor += VspecContSRpeaksA[1][j];                     //Add peak values together into 'VspecContSRpeaksWeightedDivisor'
-                  
-               j++;
-              }
-         
-         //Push peak weighted center
-         j = 0;
-         while(true)
-              {
-               if(!VspecContSRpeaksWeightedCenterA[j])
-                 {
-                  //Divide results of peak average center weighted index and push
-                  VspecContSRpeaksWeightedCenterA[j] = Math.round(VspecContSRpeaksWeighted / VspecContSRpeaksWeightedDivisor);
-                  break;
-                 }
-               else j++;
-              }
-        }
-      
-      i++;
-     }
-
+                 
 
 
 /////////////////////////////////////////////////////////////
