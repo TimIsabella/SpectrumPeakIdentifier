@@ -21,29 +21,31 @@ let i, j, k;
 
 let CycIteration = VspecContSR.length;
 
-let VspecContSRpeaksAi = new Array(CycIteration).fill(0); //index
-    
-let VspecContSRpeaksAv = new Array(CycIteration).fill(0); //value
-
-let VspecContSRpeaksPlateauCount = 0;
-let VspecContSRpeaksCloudAccume = 0;
-let VspecContSRpeaksAlength = 0;
 let VspecContSRpeaksAvgCenterA = new Array(CycIteration).fill(0); //Filling with zeros to simulate codebase
-
+let VspecContSRpeaksAlength = 0;
 let VspecContSRpeaksWeighted = 0;
 let VspecContSRpeaksWeightedDivisor = 0;
 let VspecContSRpeaksWeightedCenterA = new Array(CycIteration).fill(0); //Filling with zeros to simulate codebase
 
-//////
-
+//Peaks
 let VspecContSRpeaksCountTotal = 0;
+let VspecContSRpeaksCloudAccume = 0;
 let VspecContSRpeaksAccumeTotal = 0;
+let VspecContSRpeaksPlateauCount = 0;
+let VspecContSRpeaksAi = new Array(CycIteration).fill(0); //index -- Filling with zeros to simulate codebase
+let VspecContSRpeaksAv = new Array(CycIteration).fill(0); //value -- Filling with zeros to simulate codebase
 
+//Troughs
 let VspecContSRtroughsCountTotal = 0;
+let VspecContSRtroughsCloudAccume = 0;
 let VspecContSRtroughsAccumeTotal = 0;
+let VspecContSRtroughsPlateauCount = 0;
+let VspecContSRtroughsAi = new Array(CycIteration).fill(0); //index -- Filling with zeros to simulate codebase
+let VspecContSRtroughsAv = new Array(CycIteration).fill(0); //value -- Filling with zeros to simulate codebase
 
+//////ONLY FOR TESTING BELOW//////
+//let VspecContSRtroughsAlength = 0;
 let VspecContSRtroughsA = [];
-
 
 let outputString = "",
     weightedCenterStr = "",
@@ -52,20 +54,12 @@ let outputString = "",
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//TODO - Complete troughs calculation to include bottom plateau
+//TODO - Output trough average center and weighted center
 //     - Zero index edge case: if spectrum index zero is as a peak gets missed (could default index 0 to always be zero?)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            //ArrayInitialize(VspecContSRpeaksAvgCenterA, 0);
-            //ArrayInitialize(VspecContSRpeaksWeightedCenterA, 0);
             
-            //Reset array to nulls
-            i = 0;
-            while(i < CycIteration) {VspecContSRpeaksAvgCenterA[i] = null; i++;}
-                     
-            //Reset array to nulls
-            i = 0;
-            while(i < CycIteration) {VspecContSRpeaksWeightedCenterA[i] = null; i++;}
+            i = 0; while(i < CycIteration) {VspecContSRpeaksAvgCenterA[i] = null; i++;} //Reset array to nulls
+            i = 0; while(i < CycIteration) {VspecContSRpeaksWeightedCenterA[i] = null; i++;} //Reset array to nulls
             
             ///////////////////////////////////////////////
             ///////////Begin peak identifications///////////
@@ -76,24 +70,25 @@ let outputString = "",
                   //Identify peak base begin (undefined for before the spectrum) (i-1 < 0 for before the spectrum)
                   if((VspecContSR[i-1] == 0 || i-1 < 0) && VspecContSR[i] > 0)
                     {
-                     //Clear peak index array
-                     j = 0;
-                     while(VspecContSRpeaksAv[j]) {VspecContSRpeaksAi[j] = 0; j++;}
-                     
-                     //Clear peak value array
-                     j = 0;
-                     while(VspecContSRpeaksAv[j]) {VspecContSRpeaksAv[j] = 0; j++;}
-                     
+                     j = 0; while(VspecContSRpeaksAv[j]) {VspecContSRpeaksAi[j] = 0; j++;} //Clear peak index array
+                     j = 0; while(VspecContSRpeaksAv[j]) {VspecContSRpeaksAv[j] = 0; j++;} //Clear peak value array
                      VspecContSRpeaksPlateauCount = 0;
+                     VspecContSRpeaksCloudAccume = 0;
+                     
+                     j = 0; while(VspecContSRtroughsAv[j]) {VspecContSRtroughsAi[j] = 0; j++;} //Clear trough index array
+                     j = 0; while(VspecContSRtroughsAv[j]) {VspecContSRtroughsAv[j] = 0; j++;} //Clear trough value array
+                     VspecContSRtroughsPlateauCount = 0;
+                     VspecContSRtroughsCloudAccume = 0;
+                     
                      VspecContSRpeaksWeighted = 0;        
                      VspecContSRpeaksWeightedDivisor = 0;
-                     VspecContSRpeaksCloudAccume = 0;
                     }
                   
-                  //Identify peak beginning (lower to higher)
+                  ///////////PEAKS///////////
+                  //Identify rising (lower to higher)
                   if(VspecContSR[i-1] < VspecContSR[i]) 
                     {
-                     //If peak falling (higher to lower), (i+1 == CycIteration check for after the spectrum)
+                     //If peak complete (higher to lower), (i+1 == CycIteration check for after the spectrum)
                      if((VspecContSR[i] > VspecContSR[i+1]) || i+1 == CycIteration)
                        {
                         //Push peak
@@ -157,23 +152,86 @@ let outputString = "",
                  	     }
                     }
                   
-                  //Identify peak trough with extra check to ensure dead zones are not counter
-                  if((VspecContSR[i] > 0) && ((VspecContSR[i-1] > VspecContSR[i]) && (VspecContSR[i] < VspecContSR[i+1])))
+                  ///////////TROUGHS///////////
+                  //Identify falling (higher to lower)
+                  if((VspecContSR[i] != 0) && VspecContSR[i-1] > VspecContSR[i]) 
                     {
-                     VspecContSRtroughsCountTotal += 1;
-                     VspecContSRtroughsAccumeTotal += VspecContSR[i];
+                     //If trough complete (lower to higher), (i+1 == CycIteration check for after the spectrum)
+                     if((VspecContSR[i] < VspecContSR[i+1]) || i+1 == CycIteration)
+                       {
+                        //Push trough
+                        j = 0;
+                        while(true)
+                             {
+                              if(!VspecContSRtroughsAv[j]) 
+                                {
+                                 VspecContSRtroughsAi[j] = i;               //Push index
+                                 VspecContSRtroughsAv[j] = VspecContSR[i];  //Push value
+                                 
+                                 VspecContSRtroughsCountTotal += 1;
+                                 VspecContSRtroughsAccumeTotal += VspecContSR[i];
+                                 
+                                 VspecContSRtroughsA.push(i); ///////////////////NOT FOR CODEBASE
+                                 
+                                 break;
+                                }
+                              else j++;
+                             }
+                       
+                        VspecContSRtroughsCloudAccume += i;
+                       }
                      
-                     VspecContSRtroughsA.push(i);
+                     //If trough plateau (flat bottom)
+                     if(VspecContSR[i] == VspecContSR[i+1])
+                       {
+                        VspecContSRtroughsPlateauCount = 0;
+                        
+                        //Check if next points (bottom of spectrum down) match and add to plateau count
+                        j = 0;
+                        while(true)
+                             {
+                              //If plateau end at a rise, plateau complete, push trough point and break loop
+                              if(VspecContSR[i+j] < VspecContSR[i+1+j])
+                                {
+                                 //Push trough
+                                 k = 0;
+                                 while(true)
+                                      {
+                                       if(!VspecContSRtroughsAv[k])
+                                         {
+                                          VspecContSRtroughsAi[k] = i + Math.round(VspecContSRtroughsPlateauCount / 2); //Push index
+                                          l = i + Math.round(VspecContSRtroughsPlateauCount / 2);
+                                          VspecContSRtroughsAv[k] = VspecContSR[l]; //Push value
+                                          
+                                          VspecContSRtroughsA.push(l); ///////////////////NOT FOR CODEBASE
+                                          
+                                          break;
+                                         }
+                                       else k++;
+                                      }
+                                 
+                                 VspecContSRtroughsCloudAccume += i + Math.round(VspecContSRtroughsPlateauCount / 2);
+                                 
+                                 break;
+                                }
+                               
+                              VspecContSRtroughsPlateauCount++;
+                              j++;
+                              
+                              //If plateau ends in fall then break loop disregarding calculation (trough continuation)
+                              if(VspecContSR[i+j] > VspecContSR[i+1+j]) break;
+                             }
+                 	     }
                     }
-                  
-                  //Get peaks length
-                  VspecContSRpeaksAlength = 0;
-                  while(VspecContSRpeaksAv[VspecContSRpeaksAlength]) VspecContSRpeaksAlength++;
                   
                   ///////////BASE END///////////
                   //Identify peak base end (i+1 == CycIteration check for after the spectrum)
                   if(VspecContSR[i] > 0 && (VspecContSR[i+1] == 0 || i+1 == CycIteration))
                     {
+                     //Get peaks length
+                     VspecContSRpeaksAlength = 0;
+                     while(VspecContSRpeaksAv[VspecContSRpeaksAlength]) VspecContSRpeaksAlength++;
+                    
                      //Push peak average center
                      j = 0;
                      while(true)
@@ -265,7 +323,7 @@ for(i = 0; VspecContSR.length > i; i++)
          }
     
     //Output results to console
-    console.log(outputString + peakCenterStr + weightedCenterStr + toughs);
+    console.log(outputString + toughs + peakCenterStr + weightedCenterStr);
    }
 
 
@@ -278,13 +336,6 @@ console.log(`Array Length: ${VspecContSR.length}`);
 console.log('\n');
 console.log(`VspecContSRpeaksAvgCenterA: ${VspecContSRpeaksAvgCenterA}`);
 console.log(`VspecContSRpeaksWeightedCenterA: ${VspecContSRpeaksWeightedCenterA}`);
-//
-console.log('\n');
-console.log(`VspecContSRpeaksCountTotal: ${VspecContSRpeaksCountTotal}`);
-console.log(`VspecContSRpeaksAccumeTotal: ${VspecContSRpeaksAccumeTotal}`);
-console.log(`VspecContSRtroughsCountTotal: ${VspecContSRtroughsCountTotal}`);
-console.log(`VspecContSRtroughsAccumeTotal: ${VspecContSRtroughsAccumeTotal}`);
-console.log(`VspecContSRtroughsA: ${VspecContSRtroughsA}`);
 //
 console.log('\n');
 console.log(`Peaks Average: ${VspecContSRpeaksAccumeTotal / VspecContSRpeaksCountTotal}`);
