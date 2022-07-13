@@ -86,7 +86,7 @@ let outputString = "",
                   
                   ///////////PEAKS///////////
                   //Identify rising (lower to higher)
-                  if(VspecContSR[i] && VspecContSR[i-1] < VspecContSR[i])
+                  if(VspecContSR[i] && (VspecContSR[i-1] < VspecContSR[i]))
                     {
                      //If peak complete (higher to lower), (i+1 == CycIteration check for after the spectrum)
                      if((VspecContSR[i] > VspecContSR[i+1]) || i+1 == CycIteration)
@@ -154,7 +154,7 @@ let outputString = "",
                   
                   ///////////TROUGHS///////////
                   //Identify falling (higher to lower)
-                  if(VspecContSR[i] && VspecContSR[i-1] > VspecContSR[i]) 
+                  if(VspecContSR[i] && (VspecContSR[i-1] > VspecContSR[i])) 
                     {
                      //If trough complete (lower to higher), (i+1 == CycIteration check for after the spectrum)
                      if((VspecContSR[i] < VspecContSR[i+1]) || i+1 == CycIteration)
