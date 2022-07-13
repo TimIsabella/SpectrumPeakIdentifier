@@ -13,7 +13,7 @@
 //let VspecContSR = [0, 1, 2, 3, 33, 3, 2, 5, 10, 22, 7, 8, 2, 1, 0, 0, 0, 2, 3, 20, 25, 26, 26, 26, 3, 8, 5, 2, 1, 8, 9, 11, 7, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 3, 44, 3, 2, 1, 0];
 
 //Demonstrate all cases
-let VspecContSR = [0, 11, 6, 3, 0, 1, 6, 9, 11, 9, 6, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 1, 0, 1, 6, 9, 11, 9, 22, 9, 33, 9, 66, 9, 99, 9, 6, 1, 0, 1, 6, 9, 9, 9, 9, 9, 6, 1, 0, 1, 6, 9, 9, 9, 6, 1, 6, 33, 33, 33, 6, 1, 0, 1, 3, 6, 9, 66, 9, 6, 3, 1, 3, 6, 9, 6, 3, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 66, 9, 6, 1, 0, 1, 6, 9, 6, 6, 6, 6, 6, 6, 6, 66, 6, 1, 0, 3, 6, 9, 6, 9, 6, 9, 6];
+let VspecContSR = [0, 11, 6, 3, 0, 1, 6, 9, 22, 9, 6, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 1, 0, 1, 6, 9, 11, 9, 22, 9, 33, 9, 66, 9, 99, 9, 6, 1, 0, 1, 6, 9, 9, 9, 9, 9, 6, 1, 0, 1, 6, 9, 9, 9, 6, 1, 6, 33, 33, 33, 6, 1, 0, 1, 3, 6, 9, 66, 9, 6, 3, 1, 3, 6, 9, 6, 3, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 66, 9, 6, 1, 0, 1, 6, 9, 6, 6, 6, 6, 6, 6, 6, 66, 6, 1, 0, 3, 6, 9, 6, 9, 6, 9, 6];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -26,21 +26,33 @@ let VspecContSRpeaksAi = new Array(CycIteration).fill(0); //index
 let VspecContSRpeaksAv = new Array(CycIteration).fill(0); //value
 
 let VspecContSRpeaksPlateauCount = 0;
+let VspecContSRpeaksCloudAccume = 0;
 let VspecContSRpeaksAlength = 0;
-let VspecContSRpeaksAccume = 0;
 let VspecContSRpeaksAvgCenterA = new Array(CycIteration).fill(0); //Filling with zeros to simulate codebase
 
 let VspecContSRpeaksWeighted = 0;
 let VspecContSRpeaksWeightedDivisor = 0;
 let VspecContSRpeaksWeightedCenterA = new Array(CycIteration).fill(0); //Filling with zeros to simulate codebase
 
+//////
+
+let VspecContSRpeaksCountTotal = 0;
+let VspecContSRpeaksAccumeTotal = 0;
+
+let VspecContSRtroughsCountTotal = 0;
+let VspecContSRtroughsAccumeTotal = 0;
+
+let VspecContSRtroughsA = [];
+
+
 let outputString = "",
     weightedCenterStr = "",
-    peakCenterStr = "";
+    peakCenterStr = "",
+    toughs = "";
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//TODO - perform same calculations on troughs as for peaks
+//TODO - Complete troughs calculation to include bottom plateau
 //     - Zero index edge case: if spectrum index zero is as a peak gets missed (could default index 0 to always be zero?)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -75,7 +87,7 @@ let outputString = "",
                      VspecContSRpeaksPlateauCount = 0;
                      VspecContSRpeaksWeighted = 0;        
                      VspecContSRpeaksWeightedDivisor = 0;
-                     VspecContSRpeaksAccume = 0;
+                     VspecContSRpeaksCloudAccume = 0;
                     }
                   
                   //Identify peak beginning (lower to higher)
@@ -93,12 +105,15 @@ let outputString = "",
                                  VspecContSRpeaksAi[j] = i;               //Push index
                                  VspecContSRpeaksAv[j] = VspecContSR[i];  //Push value
                                  
+                                 VspecContSRpeaksCountTotal += 1;
+                                 VspecContSRpeaksAccumeTotal += VspecContSR[i];
+                                 
                                  break;
                                 }
                               else j++;
                              }
                        
-                        VspecContSRpeaksAccume += i;
+                        VspecContSRpeaksCloudAccume += i;
                        }
                      
                      //If peak plateau (flat top)
@@ -128,7 +143,7 @@ let outputString = "",
                                        else k++;
                                       }
                                  
-                                 VspecContSRpeaksAccume += i + Math.round(VspecContSRpeaksPlateauCount / 2);
+                                 VspecContSRpeaksCloudAccume += i + Math.round(VspecContSRpeaksPlateauCount / 2);
                                  
                                  break;
                                 }
@@ -140,6 +155,15 @@ let outputString = "",
                               if(VspecContSR[i+j] < VspecContSR[i+1+j]) break;
                              }
                  	     }
+                    }
+                  
+                  //Identify peak trough with extra check to ensure dead zones are not counter
+                  if((VspecContSR[i] > 0) && ((VspecContSR[i-1] > VspecContSR[i]) && (VspecContSR[i] < VspecContSR[i+1])))
+                    {
+                     VspecContSRtroughsCountTotal += 1;
+                     VspecContSRtroughsAccumeTotal += VspecContSR[i];
+                     
+                     VspecContSRtroughsA.push(i);
                     }
                   
                   //Get peaks length
@@ -157,7 +181,7 @@ let outputString = "",
                            if(!VspecContSRpeaksAvgCenterA[j])
                              {
                               //Add all peak indexes together and divide by quantity and push
-                              VspecContSRpeaksAvgCenterA[j] = Math.round(VspecContSRpeaksAccume / VspecContSRpeaksAlength);
+                              VspecContSRpeaksAvgCenterA[j] = Math.round(VspecContSRpeaksCloudAccume / VspecContSRpeaksAlength);
                               break;
                              }
                            else j++;
@@ -206,6 +230,15 @@ for(i = 0; VspecContSR.length > i; i++)
     outputString = "";
     peakCenterStr = "";
     weightedCenterStr = "";
+    toughs = "";
+    
+   //Identify troughs
+    j = 0;
+    while(VspecContSRtroughsA.length > j)
+         {
+          if(i == VspecContSRtroughsA[j]) toughs = `              <- Trough (${VspecContSR[i]}) - Index ${i}`;
+          j++;
+         }
     
     //Identify peak average center
     j = 0;
@@ -232,7 +265,7 @@ for(i = 0; VspecContSR.length > i; i++)
          }
     
     //Output results to console
-    console.log(outputString + peakCenterStr + weightedCenterStr);
+    console.log(outputString + peakCenterStr + weightedCenterStr + toughs);
    }
 
 
@@ -242,5 +275,17 @@ for(i = 0; VspecContSR.length > i; i++)
 console.log("\n\n")
 console.log(`Array Length: ${VspecContSR.length}`);
 //
+console.log('\n');
 console.log(`VspecContSRpeaksAvgCenterA: ${VspecContSRpeaksAvgCenterA}`);
 console.log(`VspecContSRpeaksWeightedCenterA: ${VspecContSRpeaksWeightedCenterA}`);
+//
+console.log('\n');
+console.log(`VspecContSRpeaksCountTotal: ${VspecContSRpeaksCountTotal}`);
+console.log(`VspecContSRpeaksAccumeTotal: ${VspecContSRpeaksAccumeTotal}`);
+console.log(`VspecContSRtroughsCountTotal: ${VspecContSRtroughsCountTotal}`);
+console.log(`VspecContSRtroughsAccumeTotal: ${VspecContSRtroughsAccumeTotal}`);
+console.log(`VspecContSRtroughsA: ${VspecContSRtroughsA}`);
+//
+console.log('\n');
+console.log(`Peaks Average: ${VspecContSRpeaksAccumeTotal / VspecContSRpeaksCountTotal}`);
+console.log(`Troughs Average: ${VspecContSRtroughsAccumeTotal / VspecContSRtroughsCountTotal}`);
