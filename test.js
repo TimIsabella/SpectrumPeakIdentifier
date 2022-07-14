@@ -58,7 +58,7 @@ let outputString = "",
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//TODO - Trough center and weighted get counted at index 0
+//TODO - Create calculation to combine both peak and trough weighted average
 //     - Zero index edge case: if spectrum index zero is as a peak gets missed (could default index 0 to always be zero?)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
@@ -319,6 +319,7 @@ let outputString = "",
                            else j++;
                           }
                      
+                     /*
                      ///////////COMBINED///////////
                      j = 0;
                      while(true)
@@ -331,6 +332,7 @@ let outputString = "",
                              }
                            else j++;
                           }
+                      */
                     }
                   
                   i++;
