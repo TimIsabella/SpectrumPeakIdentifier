@@ -13,7 +13,7 @@
 //let VspecContSR = [0, 1, 2, 3, 33, 3, 2, 5, 10, 22, 7, 8, 2, 1, 0, 0, 0, 2, 3, 20, 25, 26, 26, 26, 3, 8, 5, 2, 1, 8, 9, 11, 7, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 3, 44, 3, 2, 1, 0];
 
 //Demonstrate all cases
-let VspecContSR = [0, 11, 6, 3, 0, 1, 6, 9, 22, 9, 6, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 1, 0, 1, 6, 9, 11, 9, 22, 9, 33, 9, 66, 9, 99, 9, 6, 1, 0, 1, 6, 9, 9, 9, 9, 9, 6, 1, 0, 1, 6, 9, 9, 9, 6, 1, 6, 33, 33, 33, 6, 1, 0, 1, 3, 6, 9, 66, 9, 6, 3, 1, 3, 6, 9, 6, 3, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 66, 9, 6, 1, 0, 1, 6, 9, 6, 6, 6, 6, 6, 6, 6, 66, 6, 1, 0, 3, 6, 9, 6, 9, 6, 9, 6];
+let VspecContSR = [11, 6, 3, 0, 1, 6, 9, 22, 9, 6, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 1, 0, 1, 6, 9, 11, 9, 22, 9, 33, 9, 66, 9, 99, 9, 6, 1, 0, 1, 6, 9, 9, 9, 9, 9, 6, 1, 0, 1, 6, 9, 9, 9, 6, 1, 6, 33, 33, 33, 6, 1, 0, 1, 3, 6, 9, 66, 9, 6, 3, 1, 3, 6, 9, 6, 3, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 66, 9, 6, 1, 0, 1, 6, 9, 6, 6, 6, 6, 6, 6, 6, 66, 6, 1, 0, 3, 6, 9, 6, 9, 6, 9, 6, 3, 0, 3, 6, 9, 3, 9, 12, 4, 12, 5, 15, 6, 15, 7, 18, 8, 18, 9, 21, 22, 11, 9, 6, 3, 0, 3, 6, 9, 9, 9, 9, 9, 6, 9, 6, 9, 6, 3, 0];
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -26,6 +26,12 @@ let VspecContSRpeaksAlength = 0;
 let VspecContSRpeaksWeighted = 0;
 let VspecContSRpeaksWeightedDivisor = 0;
 let VspecContSRpeaksWeightedCenterA = new Array(CycIteration).fill(0); //Filling with zeros to simulate codebase
+
+let VspecContSRtroughsAvgCenterA = new Array(CycIteration).fill(0); //Filling with zeros to simulate codebase
+let VspecContSRtroughsAlength = 0;
+let VspecContSRtroughsWeighted = 0;
+let VspecContSRtroughsWeightedDivisor = 0;
+let VspecContSRtroughsWeightedCenterA = new Array(CycIteration).fill(0); //Filling with zeros to simulate codebase
 
 //Peaks
 let VspecContSRpeaksCountTotal = 0;
@@ -44,22 +50,24 @@ let VspecContSRtroughsAi = new Array(CycIteration).fill(0); //index -- Filling w
 let VspecContSRtroughsAv = new Array(CycIteration).fill(0); //value -- Filling with zeros to simulate codebase
 
 //////ONLY FOR TESTING BELOW//////
-//let VspecContSRtroughsAlength = 0;
-let VspecContSRtroughsA = [];
-
 let outputString = "",
-    weightedCenterStr = "",
+    weightedPeakCenterStr = "",
     peakCenterStr = "",
-    toughs = "";
+    weightedTroughCenterStr = "",
+    troughCenterStr = "";
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//TODO - Output trough average center and weighted center
+//TODO - Trough center and weighted get counted at index 0
 //     - Zero index edge case: if spectrum index zero is as a peak gets missed (could default index 0 to always be zero?)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
+            
+            
             i = 0; while(i < CycIteration) {VspecContSRpeaksAvgCenterA[i] = null; i++;} //Reset array to nulls
             i = 0; while(i < CycIteration) {VspecContSRpeaksWeightedCenterA[i] = null; i++;} //Reset array to nulls
+            i = 0; while(i < CycIteration) {VspecContSRtroughsAvgCenterA[i] = null; i++;} //Reset array to nulls
+            i = 0; while(i < CycIteration) {VspecContSRtroughsWeightedCenterA[i] = null; i++;} //Reset array to nulls
             
             ///////////////////////////////////////////////
             ///////////Begin peak identifications///////////
@@ -70,18 +78,21 @@ let outputString = "",
                   //Identify peak base begin (undefined for before the spectrum) (i-1 < 0 for before the spectrum)
                   if((VspecContSR[i-1] == 0 || i-1 < 0) && VspecContSR[i] > 0)
                     {
+                     //Peaks
                      j = 0; while(VspecContSRpeaksAv[j]) {VspecContSRpeaksAi[j] = 0; j++;} //Clear peak index array
                      j = 0; while(VspecContSRpeaksAv[j]) {VspecContSRpeaksAv[j] = 0; j++;} //Clear peak value array
                      VspecContSRpeaksPlateauCount = 0;
                      VspecContSRpeaksCloudAccume = 0;
+                     VspecContSRpeaksWeighted = 0;        
+                     VspecContSRpeaksWeightedDivisor = 0;
                      
+                     //Troughs
                      j = 0; while(VspecContSRtroughsAv[j]) {VspecContSRtroughsAi[j] = 0; j++;} //Clear trough index array
                      j = 0; while(VspecContSRtroughsAv[j]) {VspecContSRtroughsAv[j] = 0; j++;} //Clear trough value array
                      VspecContSRtroughsPlateauCount = 0;
                      VspecContSRtroughsCloudAccume = 0;
-                     
-                     VspecContSRpeaksWeighted = 0;        
-                     VspecContSRpeaksWeightedDivisor = 0;
+                     VspecContSRtroughsWeighted = 0;        
+                     VspecContSRtroughsWeightedDivisor = 0;
                     }
                   
                   ///////////PEAKS///////////
@@ -171,8 +182,6 @@ let outputString = "",
                                  VspecContSRtroughsCountTotal += 1;
                                  VspecContSRtroughsAccumeTotal += VspecContSR[i];
                                  
-                                 VspecContSRtroughsA.push(i); ///////////////////NOT FOR CODEBASE
-                                 
                                  break;
                                 }
                               else j++;
@@ -203,8 +212,6 @@ let outputString = "",
                                           l = i + Math.round(VspecContSRtroughsPlateauCount / 2);
                                           VspecContSRtroughsAv[k] = VspecContSR[l]; //Push value
                                           
-                                          VspecContSRtroughsA.push(l); ///////////////////NOT FOR CODEBASE
-                                          
                                           break;
                                          }
                                        else k++;
@@ -228,10 +235,11 @@ let outputString = "",
                   //Identify peak base end (i+1 == CycIteration check for after the spectrum)
                   if(VspecContSR[i] > 0 && (VspecContSR[i+1] == 0 || i+1 == CycIteration))
                     {
+                     ///////////PEAKS///////////
                      //Get peaks length
                      VspecContSRpeaksAlength = 0;
                      while(VspecContSRpeaksAv[VspecContSRpeaksAlength]) VspecContSRpeaksAlength++;
-                    
+                     
                      //Push peak average center
                      j = 0;
                      while(true)
@@ -268,6 +276,48 @@ let outputString = "",
                              }
                            else j++;
                           }
+                     
+                     ///////////TROUGHS///////////
+                     //Get troughs length
+                     VspecContSRtroughsAlength = 0;
+                     while(VspecContSRtroughsAv[VspecContSRtroughsAlength]) VspecContSRtroughsAlength++;
+                     
+                     //Push trough average center
+                     j = 0;
+                     while(true)
+                          {
+                           if(!VspecContSRtroughsAvgCenterA[j])
+                             {
+                              //Add all trough indexes together and divide by quantity and push
+                              VspecContSRtroughsAvgCenterA[j] = Math.round(VspecContSRtroughsCloudAccume / VspecContSRtroughsAlength);
+                              break;
+                             }
+                           else j++;
+                          }
+                     
+                     //Calculate trough average center weighted index
+                     // (∑(trough value * index point)) / ∑(trough value)
+                     j = 0;
+                     while(j < VspecContSRtroughsAlength)
+                          {
+                           VspecContSRtroughsWeighted += VspecContSRtroughsAv[j] * VspecContSRtroughsAi[j];  //Multiply trough value with index value, then add to 'VspecContSRtroughsWeighted'
+                           VspecContSRtroughsWeightedDivisor += VspecContSRtroughsAv[j];                     //Add trough values together into 'VspecContSRtroughsWeightedDivisor'
+                           
+                           j++;
+                          }
+                     
+                     //Push trough weighted center
+                     j = 0;
+                     while(true)
+                          {
+                           if(!VspecContSRtroughsWeightedCenterA[j])
+                             {
+                              //Divide results of trough average center weighted index and push
+                              VspecContSRtroughsWeightedCenterA[j] = Math.round(VspecContSRtroughsWeighted / VspecContSRtroughsWeightedDivisor);
+                              break;
+                             }
+                           else j++;
+                          }
                     }
                   
                   i++;
@@ -279,24 +329,15 @@ let outputString = "",
 ///////////***Below is not part of the codebase***///////////
 /////////////////////////////////////////////////////////////
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Create points for visual spectrum representation
 for(i = 0; VspecContSR.length > i; i++)
    {
     outputString = "";
+    weightedPeakCenterStr = "";
     peakCenterStr = "";
-    weightedCenterStr = "";
-    toughs = "";
-    
-   //Identify troughs
-    j = 0;
-    while(VspecContSRtroughsA.length > j)
-         {
-          if(i == VspecContSRtroughsA[j]) toughs = `              <- Trough (${VspecContSR[i]}) - Index ${i}`;
-          j++;
-         }
+    weightedTroughCenterStr = "";
+    troughCenterStr = "";
     
     //Identify peak average center
     j = 0;
@@ -310,9 +351,29 @@ for(i = 0; VspecContSR.length > i; i++)
     j = 0;
     while(VspecContSRpeaksWeightedCenterA.length > j)
          {
-          if(i == VspecContSRpeaksWeightedCenterA[j]) weightedCenterStr = `              <====== PEAK WEIGHTED AVERAGE CENTER (${VspecContSR[i]}) - Index ${i}`;
+          if(i == VspecContSRpeaksWeightedCenterA[j]) weightedPeakCenterStr = `              <====== PEAK WEIGHTED AVERAGE CENTER (${VspecContSR[i]}) - Index ${i}`;
           j++;
          }
+    
+    
+    
+    //Identify trough average center
+    j = 0;
+    while(VspecContSRtroughsAvgCenterA.length > j)
+         {
+          if(i == VspecContSRtroughsAvgCenterA[j]) troughCenterStr = `              >====== TROUGH AVERAGE CENTER (${VspecContSR[i]}) - Index ${i}`;
+          j++;
+         }
+        
+    //Identify trough weighted center
+    j = 0;
+    while(VspecContSRtroughsWeightedCenterA.length > j)
+         {
+          if(i == VspecContSRtroughsWeightedCenterA[j]) weightedTroughCenterStr = `              >====== TROUGH WEIGHTED AVERAGE CENTER (${VspecContSR[i]}) - Index ${i}`;
+          j++;
+         }
+    
+    
     
     //Output spectrum display bars
     j = 0;
@@ -323,7 +384,7 @@ for(i = 0; VspecContSR.length > i; i++)
          }
     
     //Output results to console
-    console.log(outputString + toughs + peakCenterStr + weightedCenterStr);
+    console.log(outputString + peakCenterStr + weightedPeakCenterStr + troughCenterStr + weightedTroughCenterStr);
    }
 
 
