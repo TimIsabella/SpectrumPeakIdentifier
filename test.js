@@ -21,6 +21,8 @@ let i, j, k;
 
 let CycIteration = VspecContSR.length;
 
+//Note: Filling arrays with zeros is to simulate codebase
+
 //SR cloud matrix
 let VspecContSRcloudsM = [
                           [new Array(CycIteration).fill(0)], //0 - Cloud base begins
