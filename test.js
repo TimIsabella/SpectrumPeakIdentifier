@@ -13,7 +13,7 @@
 //let VspecContSR = [0, 1, 2, 3, 33, 3, 2, 5, 10, 22, 7, 8, 2, 1, 0, 0, 0, 2, 3, 20, 25, 26, 26, 26, 3, 8, 5, 2, 1, 8, 9, 11, 7, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 3, 44, 3, 2, 1, 0];
 //let VspecContSR = [0, 62, 6, 65, 7, 18, 32, 49, 10, 17, 63, 55, 57, 23, 21, 53, 53, 39, 33, 56, 58, 25, 11, 48, 37, 34, 62, 59, 40, 64, 55, 46, 62, 61, 14, 57, 12, 27, 65, 0, 57, 65, 30, 35, 41, 53, 14, 62, 4, 55, 46, 19, 53, 65, 60, 42, 65, 30, 44, 60, 40, 43, 21, 3, 27, 59, 34, 39, 34, 17, 25, 0, 51, 34, 31, 12, 35, 35, 56, 14, 21, 7, 61, 21, 24, 7, 39, 32, 27, 38, 39, 40, 66, 9, 21, 17, 24, 53, 59, 54, 23, 15, 26, 12, 16, 1, 58, 11, 34, 50, 44, 66, 20, 21, 28, 64, 13, 0, 42, 39, 59, 60, 46, 5, 53, 63, 60, 49, 28, 39, 52, 29, 65, 0, 29, 56, 43, 61, 14, 17, 9, 31, 16, 45, 66, 35, 22, 3, 34, 3, 14, 33, 47, 48, 32, 11, 37, 25, 6, 0, 48, 4, 11, 59, 0, 28, 6, 62, 65, 66, 6, 66, 57, 4, 47, 51, 0, 65, 21, 27, 62, 34, 33, 30, 45, 8, 6, 55, 14, 63, 61, 57, 22, 45, 39, 36, 4, 49, 57, 20, 35, 53, 64, 16, 3, 53, 29, 15, 14, 43, 46, 63, 0, 19, 55, 49, 45, 4, 54, 55, 20, 5, 19, 45, 61, 4, 14, 28, 51, 57, 26, 63, 6, 29, 33, 49, 63, 7, 50, 21, 55, 10, 37, 59, 23, 44, 12, 18, 39, 54, 41, 52, 63, 22, 22, 65, 48, 7, 14, 53, 11, 27, 54, 49, 14, 29, 20, 14, 4, 58, 28, 18, 46, 20, 55, 21, 28, 27, 21, 19, 31, 27, 34, 27, 19, 21, 61, 39, 0, 43, 4, 51, 65, 42, 41, 62, 63, 56, 30, 31, 24, 5];
 //Demonstrate all cases
-let VspecContSR = [2, 11, 6, 9, 3, 0, 1, 6, 9, 22, 9, 6, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 1, 0, 1, 6, 9, 11, 9, 22, 9, 33, 9, 66, 9, 99, 9, 6, 1, 0, 1, 6, 9, 9, 9, 9, 9, 6, 1, 0, 1, 6, 9, 9, 9, 6, 1, 6, 33, 33, 33, 6, 1, 0, 1, 3, 6, 9, 66, 9, 6, 3, 1, 3, 6, 9, 6, 3, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 66, 9, 6, 1, 0, 1, 6, 9, 6, 6, 6, 6, 6, 6, 6, 66, 6, 1, 0, 3, 6, 9, 6, 9, 6, 9, 6, 3, 0, 3, 6, 33, 3, 31, 4, 29, 5, 27, 6, 25, 7, 23, 8, 21, 9, 19, 10, 17, 11, 15, 12, 13, 6, 3, 0, 3, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 9, 6, 3];
+let VspecContSR = [0, 2, 11, 6, 9, 3, 0, 1, 6, 9, 22, 9, 6, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 1, 0, 1, 6, 9, 11, 9, 22, 9, 33, 9, 66, 9, 99, 9, 6, 1, 0, 1, 6, 9, 9, 9, 9, 9, 6, 1, 0, 1, 6, 9, 9, 9, 6, 1, 6, 33, 33, 33, 6, 1, 0, 1, 3, 6, 9, 66, 9, 6, 3, 1, 3, 6, 9, 6, 3, 1, 0, 1, 6, 9, 6, 9, 6, 9, 6, 9, 6, 66, 9, 6, 1, 0, 1, 6, 9, 6, 6, 6, 6, 6, 6, 6, 66, 6, 1, 0, 3, 6, 9, 6, 9, 6, 9, 6, 3, 0, 3, 6, 33, 3, 31, 4, 29, 5, 27, 6, 25, 7, 23, 8, 21, 9, 19, 10, 17, 11, 15, 12, 13, 6, 3, 0, 3, 6, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 6, 9, 6, 3];
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
@@ -116,8 +116,8 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                  {
                   ///////////BASE BEGIN///////////
                   //Identify peak base begin (undefined for before the spectrum) (i-1 < 0 for before the spectrum)
-                  if((VspecContSR[i-1] == 0 || i-1 < 0) && VspecContSR[i] > 0)
-                  //if(VspecContSR[i-1] == 0 && VspecContSR[i] > 0)
+                  //if((VspecContSR[i-1] == 0 || i-1 < 0) && VspecContSR[i] > 0)
+                  if(VspecContSR[i-1] == 0 && VspecContSR[i] > 0)
                     {
                      //Clear temporary SR cloud matrix to nulls
                      j = 0; 
@@ -217,7 +217,7 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                                       {
                                        if(!VspecContSRcloudsM[1][k]) 
                                          {
-                                          VspecContSRcloudsM[1][k] = i + Math.round(VspecContSRcloudTempPeakPlateauCount / 2); //Push index
+                                          VspecContSRcloudsM[1][k] = i + Math.round(VspecContSRcloudTempPeakPlateauCount * 0.5); //Push index
                                           break;
                                          }
                                        else k++;
@@ -229,8 +229,8 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                                       {
                                        if(!VspecContSRcloudTempIntM[0][k])
                                          {
-                                          VspecContSRcloudTempIntM[0][k] = i + Math.round(VspecContSRcloudTempPeakPlateauCount / 2); //Push index
-                                          l = i + Math.round(VspecContSRcloudTempPeakPlateauCount / 2);
+                                          VspecContSRcloudTempIntM[0][k] = i + Math.round(VspecContSRcloudTempPeakPlateauCount * 0.5); //Push index
+                                          l = i + Math.round(VspecContSRcloudTempPeakPlateauCount * 0.5);
                                           VspecContSRcloudTempDubM[0][k] = VspecContSR[l]; //Push value
                                           
                                           break;
@@ -238,7 +238,7 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                                        else k++;
                                       }
                                  
-                                 VspecContSRcloudTempPeaksAccume += i + Math.round(VspecContSRcloudTempPeakPlateauCount / 2);
+                                 VspecContSRcloudTempPeaksAccume += i + Math.round(VspecContSRcloudTempPeakPlateauCount * 0.5);
                                  
                                  break;
                                 }
@@ -309,7 +309,7 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                                       {
                                        if(!VspecContSRcloudsM[2][k]) 
                                          {
-                                          VspecContSRcloudsM[2][k] = i + Math.round(VspecContSRcloudTempTroughsPlateauCount / 2); //Push index
+                                          VspecContSRcloudsM[2][k] = i + Math.round(VspecContSRcloudTempTroughsPlateauCount * 0.5); //Push index
                                           break;
                                          }
                                        else k++;
@@ -321,7 +321,7 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                                       {
                                        if(!VspecContSRcloudTempDubM[1][k])
                                          {
-                                          VspecContSRcloudTempIntM[1][k] = i + Math.round(VspecContSRcloudTempTroughsPlateauCount / 2); //Push index
+                                          VspecContSRcloudTempIntM[1][k] = i + Math.round(VspecContSRcloudTempTroughsPlateauCount * 0.5); //Push index
                                           l = i + Math.round(VspecContSRcloudTempTroughsPlateauCount / 2);
                                           VspecContSRcloudTempDubM[1][k] = VspecContSR[l]; //Push value
                                           
@@ -330,7 +330,7 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                                        else k++;
                                       }
                                  
-                                 VspecContSRcloudTempTroughsAccume += i + Math.round(VspecContSRcloudTempTroughsPlateauCount / 2);
+                                 VspecContSRcloudTempTroughsAccume += i + Math.round(VspecContSRcloudTempTroughsPlateauCount * 0.5);
                                  
                                  break;
                                 }
@@ -456,7 +456,7 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                            if(!VspecContSRcloudCalcCombinedA[j]) 
                              {
                               //Combine weighted results and average
-                              if(VspecContSRcloudCalcCombinedT) VspecContSRcloudCalcCombinedA[j] = Math.round((VspecContSRcloudCalcCombinedP + VspecContSRcloudCalcCombinedT) / 2);
+                              if(VspecContSRcloudCalcCombinedT) VspecContSRcloudCalcCombinedA[j] = Math.round((VspecContSRcloudCalcCombinedP + VspecContSRcloudCalcCombinedT) * 0.5);
                               else VspecContSRcloudCalcCombinedA[j] = VspecContSRcloudCalcCombinedP;  //When no trough
                                
                               break;
