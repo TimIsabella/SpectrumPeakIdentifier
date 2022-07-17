@@ -31,13 +31,17 @@ let VspecContSRcloudsM = [
                           [new Array(CycIteration).fill(0)]  //3 - Cloud base ends
                          ];
 
-//Temporary SR cloud peaks/trough points matrix (individual cloud)
-let VspecContSRcloudTempM = [
-                             [new Array(CycIteration).fill(0)], //0 - Peaks index
-                             [new Array(CycIteration).fill(0)], //1 - Peaks value
-                             [new Array(CycIteration).fill(0)], //2 - Troughs index
-                             [new Array(CycIteration).fill(0)]  //3 - Troughs value
-                            ];
+//Temporary SR cloud peaks/trough points matrix int(individual cloud)
+let VspecContSRcloudTempIntM = [
+                                [new Array(CycIteration).fill(0)], //0 - Peaks index
+                                [new Array(CycIteration).fill(0)], //1 - Trough Index
+                               ];
+
+//Temporary SR cloud peaks/trough points matrix double (individual cloud)
+let VspecContSRcloudTempDubM = [
+                                [new Array(CycIteration).fill(0)], //0 - Peaks value
+                                [new Array(CycIteration).fill(0)], //1 - Troughs value
+                               ];
 
 //SR cloud peak/trough average and weighted matrix
 let VspecContSRcloudCalcsM = [
@@ -117,12 +121,12 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                     {
                      //Clear temporary SR cloud matrix to nulls
                      j = 0; 
-                     while(VspecContSRcloudTempM[0][j]) 
+                     while(VspecContSRcloudTempIntM[0][j]) 
                           {
-                           VspecContSRcloudTempM[0][j] = null; //Peak index
-                           VspecContSRcloudTempM[1][j] = null; //Peak value
-                           VspecContSRcloudTempM[2][j] = null; //Trough index
-                           VspecContSRcloudTempM[3][j] = null; //Trough value
+                           VspecContSRcloudTempIntM[0][j] = null; //Peak index
+                           VspecContSRcloudTempDubM[0][j] = null; //Peak value
+                           VspecContSRcloudTempIntM[1][j] = null; //Trough index
+                           VspecContSRcloudTempDubM[1][j] = null; //Trough value
                            
                            j++;
                           }
@@ -179,10 +183,10 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                         j = 0;
                         while(true)
                              {
-                              if(!VspecContSRcloudTempM[0][j]) 
+                              if(!VspecContSRcloudTempIntM[0][j]) 
                                 {
-                                 VspecContSRcloudTempM[0][j] = i;               //Push index
-                                 VspecContSRcloudTempM[1][j] = VspecContSR[i];  //Push value
+                                 VspecContSRcloudTempIntM[0][j] = i;               //Push index
+                                 VspecContSRcloudTempDubM[0][j] = VspecContSR[i];  //Push value
                                  
                                  VspecContSRcloudTempPeaksCount += 1;
                                  VspecContSRcloudTempPeaksAccumeTotal += VspecContSR[i];
@@ -223,11 +227,11 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                                  k = 0;
                                  while(true)
                                       {
-                                       if(!VspecContSRcloudTempM[0][k])
+                                       if(!VspecContSRcloudTempIntM[0][k])
                                          {
-                                          VspecContSRcloudTempM[0][k] = i + Math.round(VspecContSRcloudTempPeakPlateauCount / 2); //Push index
+                                          VspecContSRcloudTempIntM[0][k] = i + Math.round(VspecContSRcloudTempPeakPlateauCount / 2); //Push index
                                           l = i + Math.round(VspecContSRcloudTempPeakPlateauCount / 2);
-                                          VspecContSRcloudTempM[1][k] = VspecContSR[l]; //Push value
+                                          VspecContSRcloudTempDubM[0][k] = VspecContSR[l]; //Push value
                                           
                                           break;
                                          }
@@ -271,10 +275,10 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                         j = 0;
                         while(true)
                              {
-                              if(!VspecContSRcloudTempM[3][j]) 
+                              if(!VspecContSRcloudTempDubM[1][j]) 
                                 {
-                                 VspecContSRcloudTempM[2][j] = i;               //Push index
-                                 VspecContSRcloudTempM[3][j] = VspecContSR[i];  //Push value
+                                 VspecContSRcloudTempIntM[1][j] = i;               //Push index
+                                 VspecContSRcloudTempDubM[1][j] = VspecContSR[i];  //Push value
                                  
                                  VspecContSRcloudTempTroughsCount += 1;
                                  VspecContSRcloudTempTroughsAccumeTotal += VspecContSR[i];
@@ -315,11 +319,11 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                                  k = 0;
                                  while(true)
                                       {
-                                       if(!VspecContSRcloudTempM[3][k])
+                                       if(!VspecContSRcloudTempDubM[1][k])
                                          {
-                                          VspecContSRcloudTempM[2][k] = i + Math.round(VspecContSRcloudTempTroughsPlateauCount / 2); //Push index
+                                          VspecContSRcloudTempIntM[1][k] = i + Math.round(VspecContSRcloudTempTroughsPlateauCount / 2); //Push index
                                           l = i + Math.round(VspecContSRcloudTempTroughsPlateauCount / 2);
-                                          VspecContSRcloudTempM[3][k] = VspecContSR[l]; //Push value
+                                          VspecContSRcloudTempDubM[1][k] = VspecContSR[l]; //Push value
                                           
                                           break;
                                          }
@@ -359,7 +363,7 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                      ///////////PEAKS///////////
                      //Get peaks length
                      VspecContSRcloudCalcsPeaksAlen = 0;
-                     while(VspecContSRcloudTempM[0][VspecContSRcloudCalcsPeaksAlen]) VspecContSRcloudCalcsPeaksAlen++;
+                     while(VspecContSRcloudTempIntM[0][VspecContSRcloudCalcsPeaksAlen]) VspecContSRcloudCalcsPeaksAlen++;
                      
                      //Push peak average center
                      j = 0;
@@ -379,8 +383,8 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                      j = 0;
                      while(j < VspecContSRcloudCalcsPeaksAlen)
                           {
-                           VspecContSRcloudCalcsPeaksWeighted += VspecContSRcloudTempM[1][j] * VspecContSRcloudTempM[0][j];  //Multiply peak value with index value, then add to 'VspecContSRcloudCalcsPeaksWeighted'
-                           VspecContSRcloudCalcsPeaksWeightedDivisor += VspecContSRcloudTempM[1][j];                         //Add peak values together into 'VspecContSRcloudCalcsPeaksWeightedDivisor'
+                           VspecContSRcloudCalcsPeaksWeighted += VspecContSRcloudTempDubM[0][j] * VspecContSRcloudTempIntM[0][j];  //Multiply peak value with index value, then add to 'VspecContSRcloudCalcsPeaksWeighted'
+                           VspecContSRcloudCalcsPeaksWeightedDivisor += VspecContSRcloudTempDubM[0][j];                         //Add peak values together into 'VspecContSRcloudCalcsPeaksWeightedDivisor'
                           
                            j++;
                           }
@@ -403,7 +407,7 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                      ///////////TROUGHS///////////
                      //Get troughs length
                      VspecContSRcloudCalcsTroughsAlen = 0;
-                     while(VspecContSRcloudTempM[2][VspecContSRcloudCalcsTroughsAlen]) VspecContSRcloudCalcsTroughsAlen++;
+                     while(VspecContSRcloudTempIntM[1][VspecContSRcloudCalcsTroughsAlen]) VspecContSRcloudCalcsTroughsAlen++;
                      
                      //Push trough average center
                      j = 0;
@@ -423,8 +427,8 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                      j = 0;
                      while(j < VspecContSRcloudCalcsTroughsAlen)
                           {
-                           VspecContSRcloudCalcsTroughsWeighted += VspecContSRcloudTempM[3][j] * VspecContSRcloudTempM[2][j];  //Multiply trough value with index value, then add to 'VspecContSRcloudCalcsTroughsWeighted'
-                           VspecContSRcloudCalcsTroughsWeightedDivisor += VspecContSRcloudTempM[3][j];                         //Add trough values together into 'VspecContSRcloudCalcsTroughsWeightedDivisor'
+                           VspecContSRcloudCalcsTroughsWeighted += VspecContSRcloudTempDubM[1][j] * VspecContSRcloudTempIntM[1][j];  //Multiply trough value with index value, then add to 'VspecContSRcloudCalcsTroughsWeighted'
+                           VspecContSRcloudCalcsTroughsWeightedDivisor += VspecContSRcloudTempDubM[1][j];                         //Add trough values together into 'VspecContSRcloudCalcsTroughsWeightedDivisor'
                            
                            j++;
                           }
