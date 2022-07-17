@@ -485,7 +485,7 @@ let outputString = "",
 //Create points for visual spectrum representation
 for(i = 0; VspecContSR.length > i; i++)
    {
-    ///*
+    /*
     //Cloud base begins
     j = 0;
     while(VspecContSRcloudsM[0].length > j)
@@ -493,7 +493,7 @@ for(i = 0; VspecContSR.length > i; i++)
           if(i == VspecContSRcloudsM[0][j]) baseBeginString = `      <-- Base begin (${VspecContSR[i]}) - Index ${i}`;   
           j++;
          }
-    //*/
+    */
      
     /*
     //Cloud peaks     
@@ -515,7 +515,7 @@ for(i = 0; VspecContSR.length > i; i++)
          }
     */
     
-    ///*
+    /*
     //Cloud base ends
     j = 0;
     while(VspecContSRcloudsM[3].length > j)
@@ -523,7 +523,7 @@ for(i = 0; VspecContSR.length > i; i++)
           if(i == VspecContSRcloudsM[3][j]) baseEndString = `     <-- Base end (${VspecContSR[i]}) - Index ${i}`;   
           j++;
          }
-    //*/
+    */
     
     //////
     
@@ -545,6 +545,7 @@ for(i = 0; VspecContSR.length > i; i++)
          }
     */
     
+    /*
     //Peak average weighted center
     j = 0;
     while(VspecContSRcloudCalcsM[1].length > j)
@@ -560,6 +561,7 @@ for(i = 0; VspecContSR.length > i; i++)
           if(i == VspecContSRcloudCalcsM[3][j]) weightedTroughCenterStr = `      <== TROUGH weighted average center (${VspecContSR[i]}) - Index ${i}`;
           j++;
          }
+    */
     
     //True center
     j = 0;
