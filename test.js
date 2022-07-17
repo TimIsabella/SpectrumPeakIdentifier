@@ -107,7 +107,7 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                  }
 
             //Clear combined calculations
-            i = 0; while(i < CycIteration) {VspecContSRcloudCalcCombinedA[i] = null; i++};
+            i = 0; while(i < CycIteration) {VspecContSRcloudCalcCombinedA[i] = null; i++;};
 
             ///////////////////////////////////////////////
             ///////////Begin peak identifications///////////
