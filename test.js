@@ -322,7 +322,7 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                                        if(!VspecContSRcloudTempDubM[1][k])
                                          {
                                           VspecContSRcloudTempIntM[1][k] = i + Math.round(VspecContSRcloudTempTroughsPlateauCount * 0.5); //Push index
-                                          l = i + Math.round(VspecContSRcloudTempTroughsPlateauCount / 2);
+                                          l = i + Math.round(VspecContSRcloudTempTroughsPlateauCount * 0.5);
                                           VspecContSRcloudTempDubM[1][k] = VspecContSR[l]; //Push value
                                           
                                           break;
