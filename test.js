@@ -380,7 +380,7 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                      while(j < VspecContSRcloudCalcsPeaksAlen)
                           {
                            VspecContSRcloudCalcsPeaksWeighted += VspecContSRcloudTempM[1][j] * VspecContSRcloudTempM[0][j];  //Multiply peak value with index value, then add to 'VspecContSRcloudCalcsPeaksWeighted'
-                           VspecContSRcloudCalcsPeaksWeightedDivisor += VspecContSRcloudTempM[1][j];                   //Add peak values together into 'VspecContSRcloudCalcsPeaksWeightedDivisor'
+                           VspecContSRcloudCalcsPeaksWeightedDivisor += VspecContSRcloudTempM[1][j];                         //Add peak values together into 'VspecContSRcloudCalcsPeaksWeightedDivisor'
                           
                            j++;
                           }
@@ -424,7 +424,7 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                      while(j < VspecContSRcloudCalcsTroughsAlen)
                           {
                            VspecContSRcloudCalcsTroughsWeighted += VspecContSRcloudTempM[3][j] * VspecContSRcloudTempM[2][j];  //Multiply trough value with index value, then add to 'VspecContSRcloudCalcsTroughsWeighted'
-                           VspecContSRcloudCalcsTroughsWeightedDivisor += VspecContSRcloudTempM[3][j];                     //Add trough values together into 'VspecContSRcloudCalcsTroughsWeightedDivisor'
+                           VspecContSRcloudCalcsTroughsWeightedDivisor += VspecContSRcloudTempM[3][j];                         //Add trough values together into 'VspecContSRcloudCalcsTroughsWeightedDivisor'
                            
                            j++;
                           }
@@ -452,15 +452,15 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                            if(!VspecContSRcloudCalcCombinedA[j]) 
                              {
                               //Combine weighted results and average
-                              if(VspecContSRcloudCalcCombinedP && VspecContSRcloudCalcCombinedT) VspecContSRcloudCalcCombinedA[j] = Math.round((VspecContSRcloudCalcCombinedP + VspecContSRcloudCalcCombinedT) / 2);
-                              if(VspecContSRcloudCalcCombinedP &! VspecContSRcloudCalcCombinedT) VspecContSRcloudCalcCombinedA[j] = VspecContSRcloudCalcCombinedP;  //When no trough
+                              if(VspecContSRcloudCalcCombinedT) VspecContSRcloudCalcCombinedA[j] = Math.round((VspecContSRcloudCalcCombinedP + VspecContSRcloudCalcCombinedT) / 2);
+                              else VspecContSRcloudCalcCombinedA[j] = VspecContSRcloudCalcCombinedP;  //When no trough
                                
                               break;
                              }
                            else j++;
                           }
                     }
-                  
+                    
                   i++;
                  }
                  
@@ -600,10 +600,3 @@ console.log(`Array Length: ${VspecContSR.length}`);
 //
 console.log(`Peaks Average Value: ${VspecContSRcloudTempPeaksAccumeTotal / VspecContSRcloudTempPeaksCount}`);
 console.log(`Troughs Average Value: ${VspecContSRcloudTempTroughsAccumeTotal / VspecContSRcloudTempTroughsCount}`);
-//
-console.log("\n");
-console.log(`VspecContSRcloudsM[0]: ${VspecContSRcloudsM[0]}`);
-console.log(`VspecContSRcloudsM[0]: ${VspecContSRcloudsM[1]}`);
-console.log(`VspecContSRcloudsM[0]: ${VspecContSRcloudsM[2]}`);
-console.log(`VspecContSRcloudsM[0]: ${VspecContSRcloudsM[3]}`);
-console.log(`VspecContSRcloudCalcCombinedA: ${VspecContSRcloudCalcCombinedA}`);
