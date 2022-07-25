@@ -25,34 +25,34 @@ let CycIteration = VspecContSR.length;
 
 //SR cloud matrix
 let VspecContSRcloudsM = [
-                          [new Array(CycIteration).fill(0)], //0 - Cloud base begins
-                          [new Array(CycIteration).fill(0)], //1 - Peaks
-                          [new Array(CycIteration).fill(0)], //2 - Troughs
-                          [new Array(CycIteration).fill(0)]  //3 - Cloud base ends
+                          [], //0 - Cloud base begins
+                          [], //1 - Peaks
+                          [], //2 - Troughs
+                          []  //3 - Cloud base ends
                          ];
 
 //Temporary SR cloud peaks/trough points matrix int(individual cloud)
 let VspecContSRcloudTempIntM = [
-                                [new Array(CycIteration).fill(0)], //0 - Peaks index
-                                [new Array(CycIteration).fill(0)], //1 - Trough Index
+                                [], //0 - Peaks index
+                                [], //1 - Trough Index
                                ];
 
 //Temporary SR cloud peaks/trough points matrix double (individual cloud)
 let VspecContSRcloudTempDubM = [
-                                [new Array(CycIteration).fill(0)], //0 - Peaks value
-                                [new Array(CycIteration).fill(0)], //1 - Troughs value
+                                [], //0 - Peaks value
+                                [], //1 - Troughs value
                                ];
 
 //SR cloud peak/trough average and weighted matrix
 let VspecContSRcloudCalcsM = [
-                              [new Array(CycIteration).fill(0)], //0 - Peaks average
-                              [new Array(CycIteration).fill(0)], //1 - Peaks weighted
-                              [new Array(CycIteration).fill(0)], //2 - Troughs average
-                              [new Array(CycIteration).fill(0)]  //3 - Troughs weighted
+                              [], //0 - Peaks average
+                              [], //1 - Peaks weighted
+                              [], //2 - Troughs average
+                              []  //3 - Troughs weighted
                              ];
 
 //Combined calculation
-let VspecContSRcloudCalcCombinedA = [new Array(CycIteration).fill(0)];  //Combined array
+let VspecContSRcloudCalcCombinedA = [];  //Combined array
 let VspecContSRcloudCalcCombinedP = 0;                                  //Peak
 let VspecContSRcloudCalcCombinedT = 0;                                  //Trough
 
@@ -77,6 +77,8 @@ let VspecContSRcloudCalcsPeaksWeighted = 0;
 let VspecContSRcloudCalcsPeaksWeightedDivisor = 0;
 let VspecContSRcloudCalcsTroughsWeighted = 0;
 let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
+
+let SRcloudSpecA = [];  //Combined array
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //TODO - Zero index edge case: if spectrum index zero is as a peak, it will get missed (could default index 0 to always be zero?)
@@ -470,7 +472,24 @@ let VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                   i++;
                  }
                  
-
+                 ///////////Write Combined points to new spectrum///////////
+                 //Clear combined calculations
+                 i = 0; while(i < CycIteration) {SRcloudSpecA[i] = 0; i++;}; //Fill with zeroes
+                 
+                 i = 0;
+                 while(i < CycIteration)
+                      {
+                       if(SRcloudSpecA[i]) SRcloudSpecA[i]--;
+                       
+                       j = 0;
+                       while(VspecContSRcloudCalcCombinedA[j])
+                            {
+                             if(VspecContSRcloudCalcCombinedA[j] == i) {SRcloudSpecA[i] += 1; break;}
+                             j++;
+                            }
+                          
+                       i++;
+                      }
 
 /////////////////////////////////////////////////////////////
 ///////////***Below is not part of the codebase***///////////
@@ -551,7 +570,7 @@ for(i = 0; VspecContSR.length > i; i++)
          }
     */
     
-    /*
+    ///*
     //Peak average weighted center
     j = 0;
     while(VspecContSRcloudCalcsM[1].length > j)
@@ -567,7 +586,7 @@ for(i = 0; VspecContSR.length > i; i++)
           if(i == VspecContSRcloudCalcsM[3][j]) weightedTroughCenterStr = `      <== TROUGH weighted average center (${VspecContSR[i]}) - Index ${i}`;
           j++;
          }
-    */
+    //*/
     
     //True center
     j = 0;
@@ -608,3 +627,9 @@ console.log(`Array Length: ${VspecContSR.length}`);
 //
 console.log(`Peaks Average Value: ${VspecContSRcloudTempPeaksAccumeTotal / VspecContSRcloudTempPeaksCount}`);
 console.log(`Troughs Average Value: ${VspecContSRcloudTempTroughsAccumeTotal / VspecContSRcloudTempTroughsCount}`);
+
+console.log(`VspecContSRcloudCalcCombinedA: ${VspecContSRcloudCalcCombinedA}`);
+
+console.log("\n")
+console.log(`SRcloudSpecA: ${SRcloudSpecA}`);
+console.log(`SRcloudSpecA length: ${SRcloudSpecA.length}`);
