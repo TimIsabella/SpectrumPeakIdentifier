@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Node test environment for the creation of formulas which identify peaks/troughs, peak/trough averages, and weighted peak/trough points within a spectrum
-//-- Written to match a separate high speed C-like codebase which DOES NOT use functions, has very few methods, and only runs procedurally
+//-- Written to match a separate high speed C-like codebase which DOES NOT use functions, has very few extensions methods, and only runs procedurally
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //https://www.randomnumberapi.com/api/v1.0/random?min=0&max=66&count=111
@@ -498,7 +498,7 @@ let SRcloudSpecA = [];  //Combined array
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 let outputString = "",
     baseBeginString = "",
-    peakString = "",  
+    peakString = "",
     troughString = "",
     baseEndString = "",
     weightedPeakCenterStr = "",
@@ -508,105 +508,110 @@ let outputString = "",
     trueCenter = "";
 
 //Create points for visual spectrum representation
-for(i = 0; VspecSRcloudA.length > i; i++)
-   {
+for (i = 0; VspecSRcloudA.length > i; i++) {
     /*
     //Cloud base begins
     j = 0;
-    while(VspecContSRcloudsM[0].length > j)
-         {
-          if(i == VspecContSRcloudsM[0][j]) baseBeginString = `      <-- Base begin (${VspecSRcloudA[i]}) - Index ${i}`;   
-          j++;
-         }
+    while (VspecContSRcloudsM[0].length > j) {
+        if (i == VspecContSRcloudsM[0][j]) baseBeginString = `      <-- Base begin (${VspecSRcloudA[i]}) - Index ${i}`;
+        j++;
+    }
     */
-     
+
     /*
     //Cloud peaks     
     j = 0;
-    while(VspecContSRcloudsM[1].length > j)
-         {
-          if(i == VspecContSRcloudsM[1][j]) peakString = `     <-- Peak (${VspecSRcloudA[i]}) - Index ${i}`;   
-          j++;
-         }
+    while (VspecContSRcloudsM[1].length > j) {
+        if (i == VspecContSRcloudsM[1][j]) peakString = `     <-- Peak (${VspecSRcloudA[i]}) - Index ${i}`;
+        j++;
+    }
     */
-    
+
     /*
     //Cloud troughs 
     j = 0;
-    while(VspecContSRcloudsM[2].length > j)
-         {
-          if(i == VspecContSRcloudsM[2][j]) troughString = `     <-- Trough (${VspecSRcloudA[i]}) - Index ${i}`;   
-          j++;
-         }
+    while (VspecContSRcloudsM[2].length > j) {
+        if (i == VspecContSRcloudsM[2][j]) troughString = `     <-- Trough (${VspecSRcloudA[i]}) - Index ${i}`;
+        j++;
+    }
     */
-    
+
     /*
     //Cloud base ends
     j = 0;
-    while(VspecContSRcloudsM[3].length > j)
-         {
-          if(i == VspecContSRcloudsM[3][j]) baseEndString = `     <-- Base end (${VspecSRcloudA[i]}) - Index ${i}`;   
-          j++;
-         }
+    while (VspecContSRcloudsM[3].length > j) {
+        if (i == VspecContSRcloudsM[3][j]) baseEndString = `     <-- Base end (${VspecSRcloudA[i]}) - Index ${i}`;
+        j++;
+    }
     */
-    
+
     //////
-    
+
     /*
     //Peak average center
     j = 0;
-    while(VspecContSRcloudCalcsM[0].length > j)
-         {
-          if(i == VspecContSRcloudCalcsM[0][j]) peakCenterStr = `      <== PEAK average center (${VspecSRcloudA[i]}) - Index ${i}`;
-          j++;
-         }
+    while (VspecContSRcloudCalcsM[0].length > j) {
+        if (i == VspecContSRcloudCalcsM[0][j])
+            peakCenterStr = `      <== PEAK average center (${VspecSRcloudA[i]}) - Index ${i}`;
+        j++;
+    }
         
     //Trough average center
     j = 0;
-    while(VspecContSRcloudCalcsM[2].length > j)
-         {
-          if(i == VspecContSRcloudCalcsM[2][j]) troughCenterStr = `      <== TROUGH average center (${VspecSRcloudA[i]}) - Index ${i}`;
-          j++;
-         }
+    while (VspecContSRcloudCalcsM[2].length > j) {
+        if (i == VspecContSRcloudCalcsM[2][j])
+            troughCenterStr = `      <== TROUGH average center (${VspecSRcloudA[i]}) - Index ${i}`;
+        j++;
+    }
     */
-    
-    ///*
+
+    /*
     //Peak average weighted center
     j = 0;
-    while(VspecContSRcloudCalcsM[1].length > j)
-         {
-          if(i == VspecContSRcloudCalcsM[1][j]) weightedPeakCenterStr = `      <== PEAK weighted average center (${VspecSRcloudA[i]}) - Index ${i}`;
-          j++;
-         }
-        
+    while (VspecContSRcloudCalcsM[1].length > j) {
+        if (i == VspecContSRcloudCalcsM[1][j])
+            weightedPeakCenterStr = `      <== PEAK weighted average center (${VspecSRcloudA[i]}) - Index ${i}`;
+        j++;
+    }
+
     //Trough average weighted center
     j = 0;
-    while(VspecContSRcloudCalcsM[3].length > j)
-         {
-          if(i == VspecContSRcloudCalcsM[3][j]) weightedTroughCenterStr = `      <== TROUGH weighted average center (${VspecSRcloudA[i]}) - Index ${i}`;
-          j++;
-         }
-    //*/
-    
+    while (VspecContSRcloudCalcsM[3].length > j) {
+        if (i == VspecContSRcloudCalcsM[3][j])
+            weightedTroughCenterStr = `      <== TROUGH weighted average center (${VspecSRcloudA[i]}) - Index ${i}`;
+        j++;
+    }
+    */
+
     //True center
     j = 0;
-    while(VspecContSRcloudCalcCombinedA.length > j)
-         {
-          if(i == VspecContSRcloudCalcCombinedA[j]) trueCenter = `                        <~~~~~~~ TRUE CENTER (${VspecSRcloudA[i]}) - Index ${i}`;
-          j++;
-         }
-    
+    while (VspecContSRcloudCalcCombinedA.length > j) {
+        if (i == VspecContSRcloudCalcCombinedA[j])
+            trueCenter = `                        <~~~~~~~ TRUE CENTER (${VspecSRcloudA[i]}) - Index ${i}`;
+        j++;
+    }
+
     //Spectrum display bars
     j = 0;
-    while(VspecSRcloudA[i] > j)
-         {
-          outputString += "█";
-          j++;
-         }
-    
+    while (VspecSRcloudA[i] > j) {
+        outputString += "█";
+        j++;
+    }
+
     //Output results to console
-    console.log(outputString + baseBeginString + peakString + troughString + baseEndString + peakCenterStr + weightedPeakCenterStr + troughCenterStr + weightedTroughCenterStr + trueCenter);
-    
+    console.log(
+            outputString +
+            baseBeginString +
+            peakString +
+            troughString +
+            baseEndString +
+            peakCenterStr +
+            weightedPeakCenterStr +
+            troughCenterStr +
+            weightedTroughCenterStr +
+            trueCenter,
+    );
+
     outputString = "";
     baseBeginString = "";
     troughString = "";
@@ -617,7 +622,7 @@ for(i = 0; VspecSRcloudA.length > i; i++)
     weightedTroughCenterStr = "";
     troughCenterStr = "";
     trueCenter = "";
-   }
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
