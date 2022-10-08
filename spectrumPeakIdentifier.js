@@ -140,7 +140,7 @@ let SRcloudSpecA = [];  //Combined array
                      
                      //Clear troughs
                      VspecContSRcloudTempTroughsPlateauCount = 0;
-                     VspecContSRcloudTempTroughsAccume = 0;VspecSRcloudA
+                     VspecContSRcloudTempTroughsAccume = 0;
                      VspecContSRcloudCalcsTroughsWeighted = 0;        
                      VspecContSRcloudCalcsTroughsWeightedDivisor = 0;
                      
